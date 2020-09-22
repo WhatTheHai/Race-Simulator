@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Model
 {
-    class Class1
+    public class Section
     {
+        SectionTypes SectionType { get; set; }
     }
 }
