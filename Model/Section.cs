@@ -6,6 +6,6 @@ namespace Model
 {
     public class Section
     {
-        SectionTypes SectionType { get; set; }
+        public SectionTypes SectionType { get; set; }
     }
 }
