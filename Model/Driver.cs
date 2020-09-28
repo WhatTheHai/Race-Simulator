@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Model
 {
-    class Driver : IParticipant
+    public class Driver : IParticipant
     {
         public string Name { get; set; }
         public int Points { get; set; }
