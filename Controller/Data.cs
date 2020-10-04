@@ -9,6 +9,8 @@ namespace Controller
     {
         public static Competition Competition { get; set; }
 
+        public static Race CurrentRace { get; set; }
+
         public static void Initialize()
         {
             Competition = new Competition();
@@ -65,6 +67,15 @@ namespace Controller
             };
             Track youSpinMeRound = new Track("YouSpinMeRound", sections2);
             Competition.Tracks.Enqueue(youSpinMeRound);
+        }
+
+        public static void NextRace()
+        {
+            Track nextTrack = Competition.NextTrack();
+            if(nextTrack != null)
+            {
+                CurrentRace = new Race(nextTrack, Competition.Participants);
+            }
         }
     }
 }

@@ -11,7 +11,14 @@ namespace Model
         public Queue<Track> Tracks { get; set; }
         public Track NextTrack()
         {
-            return null;
+            if(Tracks.Any())
+            {
+                return Tracks.Dequeue();
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }
