@@ -6,7 +6,10 @@ namespace Race_Simulator
 {
     public static class Visualization
     {
-        public static void Initalize() { };
+        public static void Initalize()
+        {
+
+        }
         #region graphics
         #endregion
     }
