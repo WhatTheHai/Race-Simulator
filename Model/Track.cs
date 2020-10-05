@@ -14,15 +14,14 @@ namespace Model
             Name = name;
             Sections = AddSections(sections);
         }
+        //Ik had dit tijdens level 2 gemaakt lol, functie van gemaakt zodat ik apart 
+        //het kon uitvogelen. Geeft sections mee als SectionTypes[] en geeft een linkedlist terug.
         public LinkedList<Section> AddSections(SectionTypes[] sections)
         {
             LinkedList<Section> tempList = new LinkedList<Section>();
             foreach (var section in sections)
             {
-                var tempSection = new Section()
-                {
-                    SectionType = section
-                };
+                var tempSection = new Section(section);
                 tempList.AddLast(tempSection);
             }
             return tempList;
