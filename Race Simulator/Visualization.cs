@@ -1,4 +1,5 @@
 ﻿using Model;
+using System;
 using System.Collections;
 using System.Linq;
 
@@ -79,33 +80,40 @@ namespace Race_Simulator
             globalX = globalY = 1000;
             foreach(Section section in track.Sections)
             {
-                switch(section.SectionType)
+                switch (section.SectionType)
                 {
                     case SectionTypes.LeftCorner:
+                        rotate(compass, "Left");
                         break;
                     case SectionTypes.RightCorner:
+                        rotate(compass, "Right");
                         break;
-                    default:
-                        //StartGrid, Finish and straight
-                        switch (compass)
-                        {
-                            case 0:
-                                y--;
-                                break;
-                            case 1:
-                                x++;
-                                break;
-                            case 2:
-                                y++;
-                                break;
-                            case 3:
-                                x--;
-                                break;
-                        }
+                }
+                switch (compass)
+                {
+                    case 0:
+                        y--;
                         break;
-
+                    case 1:
+                        x++;
+                        break;
+                    case 2:
+                        y++;
+                        break;
+                    case 3:
+                        x--;
+                        break;
+                }
+                if (globalX > x)
+                {
+                    globalX = x;
+                }
+                if(globalY > y)
+                {
+                    globalY = y;
                 }
             }
+            Console.SetCursorPosition(x * 4, y * 4);
         }
         public static int rotate(int Compass, string rotateDirection)
         {
