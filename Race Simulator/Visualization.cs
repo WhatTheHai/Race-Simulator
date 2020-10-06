@@ -85,7 +85,7 @@ namespace Race_Simulator
                         break;
                     case SectionTypes.RightCorner:
                         break;
-                    case default:
+                    default:
                         //StartGrid, Finish and straight
                         switch (compass)
                         {
