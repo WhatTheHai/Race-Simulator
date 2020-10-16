@@ -12,6 +12,7 @@ namespace Race_Simulator
         {
             Data.Initialize();
             Data.NextRace();
+            Data.CurrentRace.PlaceAllParticipants();
             //Console.WriteLine(Data.CurrentRace.Track.Name);
 /*            Track tr = Data.CurrentRace.Track;
             Visualization.setCursorPosition(tr);

@@ -1,6 +1,8 @@
-﻿using Model;
+﻿using Controller;
+using Model;
 using System;
 using System.Collections;
+using System.Globalization;
 using System.Linq;
 
 namespace Race_Simulator
@@ -14,119 +16,57 @@ namespace Race_Simulator
             compass = 1;
         }
         #region graphics
-        private static string[] _startGridHorizontal =
-        {
-            "----", "  || ", "  || ", "----"
-        };
-        private static string[] _startGridVertical =
-        {
-            "|  |", "|--|", "|  |", "|  |"
-        };
-        private static string[] _finishHorizontal =
-        {
-            "----", "  # ", "  # ", "----"
-        };
-        private static string[] _finishVertical =
-{
-            "|  |", "|##|", "|  |", "|  |"
-        };
-        private static string[] _straightHorizontal =
-{
-            "----", "    ", "    ", "----"
-        };
-        private static string[] _straightVertical =
-{
-            "|  |", "|  |", "|  |", "|  |"
-        };
-        private static string[] _bendSW =
-        {
-            "--\\", "   \\", "   |", "|  |"
-        };
-        private static string[] _bendSE =
-        {
-            " /--", "/   ", "|   ", "|  |"
-        };
-        private static string[] _bendNW =
-        {
-            "|  |", "   |", "   /", "--/ "
-        };
-        private static string[] _bendNE =
-        {
-            "|  |", "|   ", "\\   ", " \\--"
-        };
+        private static string[] _startN = { "|##|", "|1 |", "| 2|", "|  |" };
+        private static string[] _startE = { "----", "  1#", "2 #", "----" };
+        private static string[] _startS = { "|  |", "|2 |", "|  1|", "|##|" };
+        private static string[] _startW = { "----", "#1  ", "# 2 ", "----" };
+
+        private static string[] _finishN = { "|  |", "|--|", "|  |", "|  |" };
+        private static string[] _finishE = { "----", "  | ", "  | ", "----" };
+        private static string[] _finishS = { "|  |", "|  |", "|--|", "|  |" };
+        private static string[] _finishW = { "----", " |  ", " |  ", "----" };
+
+        private static string[] _straightHorizontal = { "----", "    ", "    ", "----" };
+        private static string[] _straightVertical = { "|  |", "|  |", "|  |", "|  |" };
+
+        private static string[] _bendSW = { "--\\", "   \\", "   |", "|  |" };
+        private static string[] _bendSE = { " /--", "/   ", "|   ", "|  |" };
+        private static string[] _bendNW = { "|  |", "   |", "   /", "--/ " };
+        private static string[] _bendNE = { "|  |", "|   ", "\\   ", " \\--" };
         #endregion
+
         public static void DrawTrack(Track track)
         {
             if(track.Sections.Any())
             {
                 setCursorPosition(track);
+
                 foreach (Section section in track.Sections)
                 {
                     switch (section.SectionType)
                     {
                         case SectionTypes.StartGrid:
-                            if(compass == 1 || compass == 3)
-                            {
-                                PrintSection(_startGridHorizontal);
-                            } else
-                            {
-                                PrintSection(_startGridVertical);
-                            }
+                            PrintFromCompass(_startN, _startE, _startS, _startW, section);
                             break;
                         case SectionTypes.Finish:
-                            if (compass == 1 || compass == 3)
-                            {
-                                PrintSection(_finishHorizontal);
-                            }
-                            else
-                            {
-                                PrintSection(_finishVertical);
-                            }
+                            PrintFromCompass(_finishN, _finishE, _finishS, _finishW, section);
                             break;
                         case SectionTypes.LeftCorner:
-                            switch (compass)
-                            {
-                                case 0:
-                                    PrintSection(_bendSW);
-                                    break;
-                                case 1:
-                                    PrintSection(_bendNW);
-                                    break;
-                                case 2:
-                                    PrintSection(_bendNE);
-                                    break;
-                                case 3:
-                                    PrintSection(_bendSE);
-                                    break;
-                            }
+                            PrintFromCompass(_bendSW, _bendNW, _bendNE, _bendSE, section);
                             compass = Rotate(compass, "Left");
                             break;
                         case SectionTypes.RightCorner:
-                            switch (compass)
-                            {
-                                case 0:
-                                    PrintSection(_bendSE);
-                                    break;
-                                case 1:
-                                    PrintSection(_bendSW);
-                                    break;
-                                case 2:
-                                    PrintSection(_bendNW);
-                                    break;
-                                case 3:
-                                    PrintSection(_bendNE);
-                                    break;
-                            }
+                            PrintFromCompass(_bendSE, _bendSW, _bendNW, _bendNE, section);
                             compass = Rotate(compass, "Right");
                             break;
                         case SectionTypes.Straight:
                             if (compass == 1 || compass == 3)
                             {
-                                PrintSection(_straightHorizontal);
+                                PrintSection(_straightHorizontal, section);
                             }
                             else
                             {
-                                PrintSection(_straightVertical);
+                                PrintSection(_straightVertical, section);
                             }
                             break;
                     }
@@ -212,16 +152,42 @@ namespace Race_Simulator
                     return -1;
             }
         }
-        public static void PrintSection(string[] section)
+        public static void PrintSection(string[] section, Section Section)
         {
             trueY -= 4;
             foreach (string s in section)
             {
+                IParticipant left = Data.CurrentRace.GetSectionData(Section).Left;
+                IParticipant right = Data.CurrentRace.GetSectionData(Section).Right;
+                string replaced = ReplaceStrings(s, left, right);
                 Console.SetCursorPosition(trueX, trueY);
-                Console.WriteLine(s);
+                Console.WriteLine(replaced);
                 trueY++;
-
             }
+        }
+        public static void PrintFromCompass(string[] north, string[] east, string[] south, string[] west, Section section)
+        {
+            switch (compass)
+            {
+                case 0:
+                    PrintSection(north, section);
+                    break;
+                case 1:
+                    PrintSection(east, section);
+                    break;
+                case 2:
+                    PrintSection(south, section);
+                    break;
+                case 3:
+                    PrintSection(west, section);
+                    break;
+            }
+        }
+        public static string ReplaceStrings(String text, IParticipant first, IParticipant second)
+        {
+            text = (first != null) ? text.Replace('1', first.Name[0]) : text.Replace('1', ' ');
+            text = (second != null) ? text.Replace('2', second.Name[0]) : text.Replace('2', ' ');
+            return text;
         }
     }
 }

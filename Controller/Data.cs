@@ -28,25 +28,34 @@ namespace Controller
             Car megazoef = new Car(9, 9, 90, false);
             Driver speler = new Driver("Speler", 90, megazoef, TeamColors.Red);
 
+            Car ultrazoef = new Car(10, 10, 100, false);
+            Driver videospeler = new Driver("Videospeler", 100, ultrazoef, TeamColors.Yellow);
+
+            Car geenzoef = new Car(5, 5, 50, false);
+            Driver beginner = new Driver("Beginner", 100, geenzoef, TeamColors.Grey);
+
             Competition.Participants.Add(hai);
             Competition.Participants.Add(gamer);
             Competition.Participants.Add(speler);
+            Competition.Participants.Add(videospeler);
+            Competition.Participants.Add(beginner);
         }
         public static void AddTracks()
         {
             SectionTypes[] sections1 =
             {
                 SectionTypes.StartGrid,
-                SectionTypes.Straight,
-                SectionTypes.Straight,
+                SectionTypes.StartGrid,
+                SectionTypes.StartGrid,
+                SectionTypes.StartGrid,
                 SectionTypes.RightCorner,
                 SectionTypes.RightCorner,
                 SectionTypes.Straight,
                 SectionTypes.Straight,
+                SectionTypes.Finish,
                 SectionTypes.Straight,
                 SectionTypes.RightCorner,
-                SectionTypes.RightCorner,
-                SectionTypes.Finish
+                SectionTypes.RightCorner
             };
             Track babyPark = new Track("BabyPark", sections1);
             Competition.Tracks.Enqueue(babyPark);
@@ -54,6 +63,9 @@ namespace Controller
             SectionTypes[] sections2 =
 {
                 SectionTypes.StartGrid,
+                SectionTypes.StartGrid,
+                SectionTypes.StartGrid,
+                SectionTypes.StartGrid,
                 SectionTypes.LeftCorner,
                 SectionTypes.RightCorner,
                 SectionTypes.LeftCorner,
@@ -63,7 +75,10 @@ namespace Controller
                 SectionTypes.LeftCorner,
                 SectionTypes.RightCorner,
                 SectionTypes.LeftCorner,
+                SectionTypes.RightCorner,
                 SectionTypes.Finish,
+                SectionTypes.Straight,
+                SectionTypes.LeftCorner,
                 SectionTypes.LeftCorner
             };
             Track youSpinMeRound = new Track("YouSpinMeRound", sections2);
