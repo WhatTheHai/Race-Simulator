@@ -63,7 +63,8 @@ namespace Controller
                 SectionTypes.LeftCorner,
                 SectionTypes.RightCorner,
                 SectionTypes.LeftCorner,
-                SectionTypes.Finish
+                SectionTypes.Finish,
+                SectionTypes.LeftCorner
             };
             Track youSpinMeRound = new Track("YouSpinMeRound", sections2);
             Competition.Tracks.Enqueue(youSpinMeRound);

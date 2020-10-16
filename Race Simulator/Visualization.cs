@@ -16,73 +16,43 @@ namespace Race_Simulator
         #region graphics
         private static string[] _startGridHorizontal =
         {
-            "----",
-            "  || ",
-            "  || ",
-            "----"
+            "----", "  || ", "  || ", "----"
         };
         private static string[] _startGridVertical =
-{
-            "|  |",
-            "|--|",
-            "|  |",
-            "|  |"
+        {
+            "|  |", "|--|", "|  |", "|  |"
         };
         private static string[] _finishHorizontal =
         {
-            "----",
-            "  # ",
-            "  # ",
-            "----"
+            "----", "  # ", "  # ", "----"
         };
         private static string[] _finishVertical =
 {
-            "|  |",
-            "|##|",
-            "|  |",
-            "|  |"
+            "|  |", "|##|", "|  |", "|  |"
         };
         private static string[] _straightHorizontal =
 {
-            "----",
-            "    ",
-            "    ",
-            "----"
+            "----", "    ", "    ", "----"
         };
         private static string[] _straightVertical =
 {
-            "|  |",
-            "|  |",
-            "|  |",
-            "|  |"
+            "|  |", "|  |", "|  |", "|  |"
         };
         private static string[] _bendSW =
         {
-            "--\\ ",
-            "   \\",
-            "\\  |",
-            "|  |"
+            "--\\", "   \\", "   |", "|  |"
         };
         private static string[] _bendSE =
         {
-            " /--",
-            "/   ",
-            "|   /",
-            "|   |"
+            " /--", "/   ", "|   ", "|  |"
         };
         private static string[] _bendNW =
         {
-            "|  |",
-            "/  |",
-            "   /",
-            "--/ "
+            "|  |", "   |", "   /", "--/ "
         };
         private static string[] _bendNE =
         {
-            "|  |",
-            "|  \\",
-            "\\   ",
-            " \\--"
+            "|  |", "|   ", "\\   ", " \\--"
         };
         #endregion
         public static void DrawTrack(Track track)
@@ -117,21 +87,37 @@ namespace Race_Simulator
                             switch (compass)
                             {
                                 case 0:
-                                    PrintSection(_bendNW);
-                                    break;
-                                case 1:
-                                    PrintSection(_bendNE);
-                                    break;
-                                case 2:
                                     PrintSection(_bendSW);
                                     break;
+                                case 1:
+                                    PrintSection(_bendNW);
+                                    break;
+                                case 2:
+                                    PrintSection(_bendNE);
+                                    break;
                                 case 3:
+                                    PrintSection(_bendSE);
                                     break;
                             }
-                            Rotate(compass, "Left");
+                            compass = Rotate(compass, "Left");
                             break;
                         case SectionTypes.RightCorner:
-                            Rotate(compass, "Right");
+                            switch (compass)
+                            {
+                                case 0:
+                                    PrintSection(_bendSE);
+                                    break;
+                                case 1:
+                                    PrintSection(_bendSW);
+                                    break;
+                                case 2:
+                                    PrintSection(_bendNW);
+                                    break;
+                                case 3:
+                                    PrintSection(_bendNE);
+                                    break;
+                            }
+                            compass = Rotate(compass, "Right");
                             break;
                         case SectionTypes.Straight:
                             if (compass == 1 || compass == 3)
@@ -147,18 +133,19 @@ namespace Race_Simulator
                     switch (compass)
                     {
                         case 0:
-                            trueY--;
+                            trueY -= 4;
                             break;
                         case 1:
-                            trueX++;
+                            trueX += 4;
                             break;
                         case 2:
-                            trueY++;
+                            trueY += 4;
                             break;
                         case 3:
-                            trueX--;
+                            trueX -= 4;
                             break;
                     }
+                    Console.SetCursorPosition(trueX, trueY);
                 }
             }
         }
@@ -166,7 +153,7 @@ namespace Race_Simulator
         {
             int x, y, globalX, globalY;
             x = y = 0;
-            globalX = globalY = 1000;
+            globalX = globalY = 0;
             foreach(Section section in track.Sections)
             {
                 switch (section.SectionType)
@@ -181,58 +168,59 @@ namespace Race_Simulator
                 switch (compass)
                 {
                     case 0:
-                        y--;
+                        y -= 4;
                         break;
                     case 1:
-                        x++;
+                        x += 4;
                         break;
                     case 2:
-                        y++;
+                        y += 4;
                         break;
                     case 3:
-                        x--;
+                        x -= 4;
                         break;
                 }
-                globalX = (globalX > x) ? y : 0;
-                globalY = (globalY > y) ? y : 0;
+                if(globalX > x)
+                {
+                    globalX = x;
+                }
+                if(globalY > y)
+                {
+                    globalY = y;
+                }
             }
-            Console.SetCursorPosition(-globalX * 4, -globalY * 4);
+            Console.SetCursorPosition(-globalX, -globalY);
             compass = 1;
-            trueX = globalX;
-            trueY = globalY;
+            Console.WriteLine(globalX);
+            Console.WriteLine(globalY);
+            trueX = -globalX;
+            trueY = -(globalY - 4);
         }
         public static int Rotate(int Compass, string rotateDirection)
         {
             switch(rotateDirection)
             {
                 case "Left":
-                    if(Compass < 1)
-                    {
-                        Compass = 3;
-                    }
-                    else
-                    {
-                        Compass--;
-                    }
+                    Compass = (Compass < 1) ? 3 : Compass -= 1;
+                    //If compass == 0, reset to the left, otherwise countdown.
                     return Compass;
                 case "Right":
-                    if(Compass > 2)
-                    {
-                        Compass = 0;
-                    }
-                    else
-                    {
-                        Compass++;
-                    }
+                    Compass = (Compass > 2) ? 0 : Compass += 1;
+                    //Same as case left, but instead if compass == 3, reset to north
                     return Compass;
+                default:
+                    return -1;
             }
-            return -1;
         }
         public static void PrintSection(string[] section)
         {
-            foreach(string s in section)
+            trueY -= 4;
+            foreach (string s in section)
             {
+                Console.SetCursorPosition(trueX, trueY);
                 Console.WriteLine(s);
+                trueY++;
+
             }
         }
     }

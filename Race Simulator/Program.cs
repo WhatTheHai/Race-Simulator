@@ -18,9 +18,8 @@ namespace Race_Simulator
             Console.WriteLine("test");*/
 
             Track tr = Data.Competition.NextTrack();
-            Console.WriteLine(tr.Name);
-            Visualization.setCursorPosition(tr);
-            Console.WriteLine("test");
+            //Console.WriteLine(tr.Name);
+            Visualization.DrawTrack(tr);
             for (; ; )
             {
                 Thread.Sleep(100);
