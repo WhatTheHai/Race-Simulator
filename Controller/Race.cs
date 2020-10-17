@@ -15,17 +15,11 @@ namespace Controller
 
         public SectionData GetSectionData(Section section)
         {
-            if (_positions.ContainsKey(section))
+            if (!_positions.ContainsKey(section))
             {
-                return _positions[section];
+                _positions.Add(section, new SectionData());
             }
-            else
-            {
-                SectionData SecData = new SectionData();
-                _positions.Add(section, SecData);
-                SectionData sd = _positions[section];
-                return sd;
-            }
+            return _positions[section];
         }
         public Race(Track track, List<IParticipant> participants)
         {

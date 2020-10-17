@@ -17,9 +17,9 @@ namespace Race_Simulator
         }
         #region graphics
         private static string[] _startN = { "|##|", "|1 |", "| 2|", "|  |" };
-        private static string[] _startE = { "----", "  1#", "2 #", "----" };
+        private static string[] _startE = { "----", "  1#", " 2# ", "----" };
         private static string[] _startS = { "|  |", "|2 |", "|  1|", "|##|" };
-        private static string[] _startW = { "----", "#1  ", "# 2 ", "----" };
+        private static string[] _startW = { "----", "#1  ", " #2 ", "----" };
 
         private static string[] _finishN = { "|  |", "|--|", "|  |", "|  |" };
         private static string[] _finishE = { "----", "  | ", "  | ", "----" };

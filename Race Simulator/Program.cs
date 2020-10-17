@@ -14,13 +14,14 @@ namespace Race_Simulator
             Data.NextRace();
             Data.CurrentRace.PlaceAllParticipants();
             //Console.WriteLine(Data.CurrentRace.Track.Name);
-/*            Track tr = Data.CurrentRace.Track;
-            Visualization.setCursorPosition(tr);
-            Console.WriteLine("test");*/
+            /*            Track tr = Data.CurrentRace.Track;
+                        Visualization.setCursorPosition(tr);
+                        Console.WriteLine("test");*/
 
-            Track tr = Data.Competition.NextTrack();
             //Console.WriteLine(tr.Name);
-            Visualization.DrawTrack(tr);
+/*            Data.NextRace();
+            Data.CurrentRace.PlaceAllParticipants();*/
+            Visualization.DrawTrack(Data.CurrentRace.Track);
             for (; ; )
             {
                 Thread.Sleep(100);

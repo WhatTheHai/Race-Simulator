@@ -34,11 +34,15 @@ namespace Controller
             Car geenzoef = new Car(5, 5, 50, false);
             Driver beginner = new Driver("Beginner", 100, geenzoef, TeamColors.Grey);
 
+            Car superzoef = new Car(8, 8, 80, false);
+            Driver lilith = new Driver("Lilith", 100, superzoef, TeamColors.Red);
+
             Competition.Participants.Add(hai);
             Competition.Participants.Add(gamer);
             Competition.Participants.Add(speler);
             Competition.Participants.Add(videospeler);
             Competition.Participants.Add(beginner);
+            Competition.Participants.Add(lilith);
         }
         public static void AddTracks()
         {
