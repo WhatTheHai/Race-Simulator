@@ -9,9 +9,9 @@ namespace Race_Simulator
 {
     public static class Visualization
     {
-        private static int compass = 1;
+        private static int compass;
         private static int trueX, trueY;
-        public static void Initalize()
+        public static void Initialize()
         {
             compass = 1;
         }
@@ -92,8 +92,7 @@ namespace Race_Simulator
         public static void setCursorPosition(Track track)
         {
             int x, y, globalX, globalY;
-            x = y = 0;
-            globalX = globalY = 0;
+            x = y = globalX = globalY = 0;
             foreach(Section section in track.Sections)
             {
                 switch (section.SectionType)
@@ -183,11 +182,17 @@ namespace Race_Simulator
                     break;
             }
         }
-        public static string ReplaceStrings(String text, IParticipant first, IParticipant second)
+        public static string ReplaceStrings(string text, IParticipant first, IParticipant second)
         {
             text = (first != null) ? text.Replace('1', first.Name[0]) : text.Replace('1', ' ');
             text = (second != null) ? text.Replace('2', second.Name[0]) : text.Replace('2', ' ');
-            return text;
+            return text; 
+        }
+
+        public static void OnDriversChanged(object sender, EventArgs e)
+        {
+            DriversChangedEventArgs driverE = (DriversChangedEventArgs) e;
+            DrawTrack(driverE.Track); 
         }
     }
 }

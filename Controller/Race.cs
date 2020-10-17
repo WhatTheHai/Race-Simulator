@@ -1,7 +1,10 @@
 ﻿using Model;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading;
+using System.Timers;
+using Timer = System.Timers.Timer;
+//ambiguous
 
 namespace Controller
 {
@@ -12,6 +15,9 @@ namespace Controller
         public DateTime StartTime;
         private Random _random = new Random(DateTime.Now.Millisecond);
         private Dictionary<Section, SectionData> _positions = new Dictionary<Section, SectionData>();
+        private Timer _timer;
+        public event EventHandler DriversChanged;
+
 
         public SectionData GetSectionData(Section section)
         {
@@ -26,7 +32,22 @@ namespace Controller
             Track = track;
             Participants = participants;
             PlaceAllParticipants();
+
+            _timer = new Timer(500);
+            _timer.Elapsed += OnTimedEvent;
+
         }
+
+        public void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+
+        }
+
+        public void Start()
+        {
+            _timer.Start();
+        }
+
         public void RandomizeEquipment()
         {
             foreach(IParticipant participant in Participants)
