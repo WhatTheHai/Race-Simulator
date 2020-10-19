@@ -14,7 +14,7 @@ namespace Race_Simulator
             Data.NextRace();
             //Console.WriteLine(Data.CurrentRace.Track.Name);
             /*            Track tr = Data.CurrentRace.Track;
-                        Visualization.setCursorPosition(tr);
+                        Visualization.TrackSetCursorPosition(tr);
                         Console.WriteLine("test");*/
 
             //Console.WriteLine(tr.Name);

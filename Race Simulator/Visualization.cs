@@ -39,7 +39,7 @@ namespace Race_Simulator
         {
             if(track.Sections.Any())
             {
-                setCursorPosition(track);
+                TrackSetCursorPosition(track);
 
                 foreach (Section section in track.Sections)
                 {
@@ -89,7 +89,7 @@ namespace Race_Simulator
                 }
             }
         }
-        public static void setCursorPosition(Track track)
+        public static void TrackSetCursorPosition(Track track)
         {
             int x, y, globalX, globalY;
             x = y = globalX = globalY = 0;

@@ -14,10 +14,10 @@ namespace Controller
         public static void Initialize()
         {
             Competition = new Competition();
-            AddDeelnemers();
+            AddParticipants();
             AddTracks();
         }
-        public static void AddDeelnemers()
+        public static void AddParticipants()
         {
             Car zoef = new Car(10,10,100,false);
             Driver hai = new Driver("Hai", 100, zoef, TeamColors.Green);
