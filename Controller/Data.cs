@@ -16,6 +16,7 @@ namespace Controller
             Competition = new Competition();
             AddParticipants();
             AddTracks();
+            NextRace();
         }
         public static void AddParticipants()
         {

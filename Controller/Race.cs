@@ -40,7 +40,6 @@ namespace Controller
 
         public void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-
         }
 
         public void Start()
