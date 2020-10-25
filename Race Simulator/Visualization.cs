@@ -13,7 +13,9 @@ namespace Race_Simulator
         private static int trueX, trueY;
         public static void Initialize()
         {
+            Console.CursorVisible = true;
             compass = 1;
+            Data.CurrentRace.DriversChanged += OnDriversChanged;
         }
         #region graphics
         private static string[] _startN = { "|##|", "|1 |", "| 2|", "|  |" };
@@ -21,18 +23,25 @@ namespace Race_Simulator
         private static string[] _startS = { "|  |", "|2 |", "|  1|", "|##|" };
         private static string[] _startW = { "----", "#1  ", " #2 ", "----" };
 
-        private static string[] _finishN = { "|  |", "|--|", "|  |", "|  |" };
-        private static string[] _finishE = { "----", "  | ", "  | ", "----" };
-        private static string[] _finishS = { "|  |", "|  |", "|--|", "|  |" };
-        private static string[] _finishW = { "----", " |  ", " |  ", "----" };
+        private static string[] _finishN = { "|  |", "|--|", "|1 |", "| 2|" };
+        private static string[] _finishE = { "----", " 1| ", "2 | ", "----" };
+        private static string[] _finishS = { "|2 |", "| 1|", "|--|", "|  |" };
+        private static string[] _finishW = { "----", " | 2", " |1 ", "----" };
 
-        private static string[] _straightHorizontal = { "----", "    ", "    ", "----" };
-        private static string[] _straightVertical = { "|  |", "|  |", "|  |", "|  |" };
+        private static string[] _straightN = { "|  |", "|1 |", "| 2|", "|  |" };
+        private static string[] _straightE = { "----", "  1 ", " 2  ", "----" };
+        private static string[] _straightS = { "|  |", "|2 |", "| 1|", "|  |" };
+        private static string[] _straightW = { "----", "  2 ", " 1  ", "----" };
 
-        private static string[] _bendSW = { "--\\", "   \\", "   |", "|  |" };
-        private static string[] _bendSE = { " /--", "/   ", "|   ", "|  |" };
-        private static string[] _bendNW = { "|  |", "   |", "   /", "--/ " };
-        private static string[] _bendNE = { "|  |", "|   ", "\\   ", " \\--" };
+        private static string[] _leftN = { "--\\ ", " 2 \\", "  1|", "|  |" };
+        private static string[] _leftE = { "|  |", " 1 |", "  2/", "--/ " };
+        private static string[] _leftS = { "|  |", "|1  ", "\\ 2 ", " \\--" };
+        private static string[] _leftW = { " /--", "/ 2 ", "|1  ", "|  |" };
+
+        private static string[] _rightN = { " /--", "/ 2 ", "|1  ", "|  |" };
+        private static string[] _rightE = { "--\\ ", " 1 \\", "  2|", "|  |" };
+        private static string[] _rightS = { "|  |", " 2 |", "  1/", "--/ " };
+        private static string[] _rightW = { "|  |", "|1  ", "\\ 2 ", " \\--" };
         #endregion
 
         public static void DrawTrack(Track track)
@@ -52,22 +61,15 @@ namespace Race_Simulator
                             PrintFromCompass(_finishN, _finishE, _finishS, _finishW, section);
                             break;
                         case SectionTypes.LeftCorner:
-                            PrintFromCompass(_bendSW, _bendNW, _bendNE, _bendSE, section);
+                            PrintFromCompass(_leftN, _leftE, _leftS, _leftW, section);
                             compass = Rotate(compass, "Left");
                             break;
                         case SectionTypes.RightCorner:
-                            PrintFromCompass(_bendSE, _bendSW, _bendNW, _bendNE, section);
+                            PrintFromCompass(_rightN, _rightE, _rightS, _rightW, section);
                             compass = Rotate(compass, "Right");
                             break;
                         case SectionTypes.Straight:
-                            if (compass == 1 || compass == 3)
-                            {
-                                PrintSection(_straightHorizontal, section);
-                            }
-                            else
-                            {
-                                PrintSection(_straightVertical, section);
-                            }
+                            PrintFromCompass(_straightN, _straightE, _straightS, _straightW, section);
                             break;
                     }
                     switch (compass)
@@ -130,8 +132,6 @@ namespace Race_Simulator
             }
             Console.SetCursorPosition(-globalX, -globalY);
             compass = 1;
-            Console.WriteLine(globalX);
-            Console.WriteLine(globalY);
             trueX = -globalX;
             trueY = -(globalY - 4);
         }
