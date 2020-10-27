@@ -43,52 +43,23 @@ namespace Controller
 
             Start();
         }
-        public void MoveToInvisible(SectionData nextSection, SectionData currentSection, SectionData hiddenSectionData)
+        public void hideParticipant(SectionData nextSection, SectionData hiddenSectionData, IParticipant participant1, IParticipant participant2)
         {
-            if (currentSection.Left != null)
+            if (participant1 == nextSection.Left || participant2 == nextSection.Left)
             {
-                currentSection.DistanceLeft +=
-                    currentSection.Left.Equipment.Speed * currentSection.Left.Equipment.Performance;
-                if (nextSection.Left == null && currentSection.DistanceRight > Section.Length)
-                {
-                    hiddenSectionData.Left = currentSection.Left;
-                    hiddenSectionData.DistanceLeft = currentSection.DistanceLeft - Section.Length;
-                    //Reset
-                    currentSection.Left = null;
-                    currentSection.DistanceLeft = 0;
-                }
-                //if left is full, try right
-                else if (nextSection.Right == null && currentSection.DistanceRight > Section.Length)
-                {
-                    hiddenSectionData.Right = currentSection.Left;
-                    hiddenSectionData.DistanceRight = currentSection.DistanceRight;
-                    //Reset
-                    currentSection.Left = null;
-                    currentSection.DistanceLeft = 0;
-                }
+                hiddenSectionData.Left = nextSection.Left;
+                hiddenSectionData.DistanceLeft = nextSection.DistanceLeft + Section.Length;
+                //Reset
+                nextSection.Left = null;
+                nextSection.DistanceLeft = 0;
             }
-            if (currentSection.Right != null)
+            if (participant1 == nextSection.Right || participant2 == nextSection.Right)
             {
-
-                currentSection.DistanceRight +=
-                    currentSection.Right.Equipment.Speed * currentSection.Right.Equipment.Performance;
-                if (nextSection.Right == null && currentSection.DistanceRight > Section.Length)
-                {
-                    hiddenSectionData.Right = currentSection.Right;
-                    hiddenSectionData.DistanceRight = currentSection.DistanceRight - Section.Length;
-                    //Reset
-                    currentSection.Right = null;
-                    currentSection.DistanceRight = 0;
-                }
-                //if Right is full, try left
-                else if (nextSection.Left == null && currentSection.DistanceRight > Section.Length)
-                {
-                    hiddenSectionData.Left = currentSection.Right;
-                    hiddenSectionData.DistanceRight = currentSection.DistanceRight;
-                    //Reset
-                    currentSection.Right = null;
-                    currentSection.DistanceRight = 0;
-                }
+                hiddenSectionData.Right = nextSection.Right;
+                hiddenSectionData.DistanceRight = nextSection.DistanceRight + Section.Length;
+                //Reset
+                nextSection.Right = null;
+                nextSection.DistanceRight = 0;
             }
         }
         public void MoveParticipants()
@@ -97,17 +68,14 @@ namespace Controller
             SectionData nextSection = _positions.First().Value;
             SectionData hiddenSectionData = new SectionData();
             int counter = 0;
+            IParticipant participant1 = _positions.Last().Value.Left;
+            IParticipant participant2 = _positions.Last().Value.Right;
+
             //Iterate through all the positions, reverse the positions because otherwise it's checking the wrong way
             foreach (KeyValuePair<Section, SectionData> kvPair in _positions.Reverse())
             {
                 SectionData currentSectionSD = kvPair.Value;
 
-                //Do this once at the start of the loop
-                if (counter == 0)
-                {
-                    MoveToInvisible(nextSection, currentSectionSD, hiddenSectionData);
-                    counter++;
-                }
                 if (currentSectionSD.Left != null)
                 {
                     currentSectionSD.DistanceLeft +=
@@ -125,6 +93,19 @@ namespace Controller
                     {
                         MoveParticipantsRightSection(nextSection, currentSectionSD);
                     }
+                }
+                //If you moved it, don't move it again.
+                if (counter == 0)
+                {
+                    if (participant1 == _positions.First().Value.Left ||
+                        participant1 == _positions.First().Value.Right ||
+                        participant2 == _positions.First().Value.Left ||
+                        participant2 == _positions.First().Value.Right)
+                    {
+                        hideParticipant(nextSection, hiddenSectionData, participant1, participant2);
+                    }
+
+                    counter++;
                 }
                 nextSection = kvPair.Value;
             }
