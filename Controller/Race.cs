@@ -1,7 +1,9 @@
 ﻿using Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Timers;
 using Timer = System.Timers.Timer;
@@ -41,16 +43,71 @@ namespace Controller
 
             Start();
         }
+        public void MoveToInvisible(SectionData nextSection, SectionData currentSection, SectionData hiddenSectionData)
+        {
+            if (currentSection.Left != null)
+            {
+                currentSection.DistanceLeft +=
+                    currentSection.Left.Equipment.Speed * currentSection.Left.Equipment.Performance;
+                if (nextSection.Left == null && currentSection.DistanceRight > Section.Length)
+                {
+                    hiddenSectionData.Left = currentSection.Left;
+                    hiddenSectionData.DistanceLeft = currentSection.DistanceLeft - Section.Length;
+                    //Reset
+                    currentSection.Left = null;
+                    currentSection.DistanceLeft = 0;
+                }
+                //if left is full, try right
+                else if (nextSection.Right == null && currentSection.DistanceRight > Section.Length)
+                {
+                    hiddenSectionData.Right = currentSection.Left;
+                    hiddenSectionData.DistanceRight = currentSection.DistanceRight;
+                    //Reset
+                    currentSection.Left = null;
+                    currentSection.DistanceLeft = 0;
+                }
+            }
+            if (currentSection.Right != null)
+            {
 
+                currentSection.DistanceRight +=
+                    currentSection.Right.Equipment.Speed * currentSection.Right.Equipment.Performance;
+                if (nextSection.Right == null && currentSection.DistanceRight > Section.Length)
+                {
+                    hiddenSectionData.Right = currentSection.Right;
+                    hiddenSectionData.DistanceRight = currentSection.DistanceRight - Section.Length;
+                    //Reset
+                    currentSection.Right = null;
+                    currentSection.DistanceRight = 0;
+                }
+                //if Right is full, try left
+                else if (nextSection.Left == null && currentSection.DistanceRight > Section.Length)
+                {
+                    hiddenSectionData.Left = currentSection.Right;
+                    hiddenSectionData.DistanceRight = currentSection.DistanceRight;
+                    //Reset
+                    currentSection.Right = null;
+                    currentSection.DistanceRight = 0;
+                }
+            }
+        }
         public void MoveParticipants()
         {
             //Initialize
             SectionData nextSection = _positions.First().Value;
-
+            SectionData hiddenSectionData = new SectionData();
+            int counter = 0;
             //Iterate through all the positions, reverse the positions because otherwise it's checking the wrong way
             foreach (KeyValuePair<Section, SectionData> kvPair in _positions.Reverse())
             {
                 SectionData currentSectionSD = kvPair.Value;
+
+                //Do this once at the start of the loop
+                if (counter == 0)
+                {
+                    MoveToInvisible(nextSection, currentSectionSD, hiddenSectionData);
+                    counter++;
+                }
                 if (currentSectionSD.Left != null)
                 {
                     currentSectionSD.DistanceLeft +=
@@ -69,9 +126,10 @@ namespace Controller
                         MoveParticipantsRightSection(nextSection, currentSectionSD);
                     }
                 }
-
-                
+                nextSection = kvPair.Value;
             }
+            MoveParticipantsLeftSection(_positions.First().Value, hiddenSectionData);
+            MoveParticipantsRightSection(_positions.First().Value, hiddenSectionData);
         }
 
         public void MoveParticipantsLeftSection(SectionData nextSection, SectionData currentSection)
@@ -83,14 +141,12 @@ namespace Controller
                 //Reset
                 currentSection.Left = null;
                 currentSection.DistanceLeft = 0;
-
-
             }
             //if left is full, try right
             else if (nextSection.Right == null)
             {
                 nextSection.Right = currentSection.Left;
-                nextSection.DistanceRight = 0;
+                nextSection.DistanceRight = currentSection.DistanceLeft;
                 //Reset
                 currentSection.Left = null;
                 currentSection.DistanceLeft = 0;
@@ -111,7 +167,7 @@ namespace Controller
             else if (nextSection.Left == null)
             {
                 nextSection.Left = currentSection.Right;
-                nextSection.DistanceRight = 0;
+                nextSection.DistanceRight = currentSection.DistanceRight;
                 //Reset
                 currentSection.Right = null;
                 currentSection.DistanceRight = 0;

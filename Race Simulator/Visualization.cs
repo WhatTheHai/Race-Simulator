@@ -23,10 +23,10 @@ namespace Race_Simulator
         private static string[] _startS = { "|  |", "|2 |", "|  1|", "|##|" };
         private static string[] _startW = { "----", "#1  ", " #2 ", "----" };
 
-        private static string[] _finishN = { "|  |", "|--|", "|1 |", "| 2|" };
-        private static string[] _finishE = { "----", " 1| ", "2 | ", "----" };
-        private static string[] _finishS = { "|2 |", "| 1|", "|--|", "|  |" };
-        private static string[] _finishW = { "----", " | 2", " |1 ", "----" };
+        private static string[] _finishN = { "|  |", "|==|", "|1 |", "| 2|" };
+        private static string[] _finishE = { "----", " 1[]", "2 []", "----" };
+        private static string[] _finishS = { "|2 |", "| 1|", "|==|", "|  |" };
+        private static string[] _finishW = { "----", "[] 2", "[]1 ", "----" };
 
         private static string[] _straightN = { "|  |", "|1 |", "| 2|", "|  |" };
         private static string[] _straightE = { "----", "  1 ", " 2  ", "----" };
