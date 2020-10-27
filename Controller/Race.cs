@@ -17,6 +17,7 @@ namespace Controller
         public List<IParticipant> Participants;
         public DateTime StartTime;
         private Random _random = new Random(DateTime.Now.Millisecond);
+        private Dictionary<IParticipant, int> _finishes = new Dictionary<IParticipant, int>();
         private Dictionary<Section, SectionData> _positions = new Dictionary<Section, SectionData>();
         private Timer _timer;
         private bool _isMoving = false;
@@ -188,6 +189,8 @@ namespace Controller
                 _positions.Add(section, new SectionData());
             }
         }
+
+        //Places all participants in the sections + every participant has their own counter of amount of finishes
         public void PlaceAllParticipants()
         {
             //Stack instead of queue because you want the first people that you want to add to be at the front of the
@@ -214,10 +217,14 @@ namespace Controller
                 {
                     sectionData.Left = Participants[participantsCounter];
                     sectionData.Right = Participants[participantsCounter + 1];
+
+                    _finishes.Add(Participants[participantsCounter], 0);
+                    _finishes.Add(Participants[participantsCounter + 1], 0);
                     participantsCounter += 2;
                 } else if (totalParticipants > participantsCounter)
                 {
                     sectionData.Left = Participants[participantsCounter];
+                    _finishes.Add(Participants[participantsCounter], 0);
                     participantsCounter++;
                 }
             }
