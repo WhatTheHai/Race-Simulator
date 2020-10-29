@@ -16,6 +16,7 @@ namespace Race_Simulator
             Console.CursorVisible = true;
             compass = 1;
             Data.CurrentRace.DriversChanged += OnDriversChanged;
+            Data.CurrentRace.NextRace += OnNextRace;
         }
         #region graphics
         private static string[] _startN = { "|##|", "|1 |", "| 2|", "|  |" };
@@ -193,6 +194,22 @@ namespace Race_Simulator
         {
             DriversChangedEventArgs driverE = (DriversChangedEventArgs) e;
             DrawTrack(driverE.Track); 
+        }
+
+        public static void OnNextRace(object sender, EventArgs e)
+        {
+            Console.Clear();
+            Data.CurrentRace.CleanupEvents();
+            Data.NextRace();
+            //Visualizer itself
+            if (Data.CurrentRace != null)
+            {
+                Initialize();
+            }
+            else
+            {
+                Console.WriteLine("All races are finished.");
+            }
         }
     }
 }

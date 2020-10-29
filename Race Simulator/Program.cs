@@ -11,7 +11,6 @@ namespace Race_Simulator
         static void Main(string[] args)
         {
             Data.Initialize();
-            Data.NextRace();
             Visualization.Initialize();
             Visualization.DrawTrack(Data.CurrentRace.Track);
             for (; ; )

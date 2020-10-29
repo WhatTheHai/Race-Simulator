@@ -7,7 +7,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Timers;
 using Timer = System.Timers.Timer;
-//ambiguous
 
 namespace Controller
 {
@@ -20,8 +19,11 @@ namespace Controller
         private Dictionary<IParticipant, int> _finishes = new Dictionary<IParticipant, int>();
         private Dictionary<Section, SectionData> _positions = new Dictionary<Section, SectionData>();
         private Timer _timer;
+        private int _rounds = 0;
+        private int _participantsCounter;
         private bool _isMoving = false;
         public event EventHandler DriversChanged;
+        public event EventHandler NextRace;
 
 
         public SectionData GetSectionData(Section section)
@@ -38,15 +40,20 @@ namespace Controller
             Participants = participants;
             SectionsToDictionary();
             PlaceAllParticipants();
+            _participantsCounter = Participants.Count;
 
             _timer = new Timer(500);
             _timer.Elapsed += OnTimedEvent;
 
             Start();
         }
+        //If the participant gets move from the end to the start of the track, hide the participant
+        //the hidden section does not count as an extra length, so it makes it up by adding the
+        //section length to the distance
         public void hideParticipant(SectionData nextSection, SectionData hiddenSectionData, IParticipant participant1, IParticipant participant2)
         {
-            if (participant1 == nextSection.Left || participant2 == nextSection.Left)
+            //Left has to be the participant has had been moved, so either participant1 or participant2
+            if (nextSection.Left != null && (nextSection.Left == participant1 || nextSection.Left == participant2))
             {
                 hiddenSectionData.Left = nextSection.Left;
                 hiddenSectionData.DistanceLeft = nextSection.DistanceLeft + Section.Length;
@@ -54,7 +61,8 @@ namespace Controller
                 nextSection.Left = null;
                 nextSection.DistanceLeft = 0;
             }
-            if (participant1 == nextSection.Right || participant2 == nextSection.Right)
+            //Same principle as in the if condition before, but instead check right.
+            if (nextSection.Right != null && (nextSection.Right == participant1 || nextSection.Right == participant2))
             {
                 hiddenSectionData.Right = nextSection.Right;
                 hiddenSectionData.DistanceRight = nextSection.DistanceRight + Section.Length;
@@ -63,12 +71,55 @@ namespace Controller
                 nextSection.DistanceRight = 0;
             }
         }
+
+        public void CheckFinishes(SectionData finish, String side)
+        {
+            if (finish.Left != null && side == "left")
+            {
+                if (_finishes[finish.Left] >= _rounds)
+                {
+                    RemoveParticipant(finish, side);
+                    _participantsCounter--;
+                }
+                else
+                {
+                    _finishes[finish.Left]++;
+                }
+            }
+
+            if (finish.Right != null && side == "right")
+            {
+                if (_finishes[finish.Right] >= _rounds)
+                {
+                    RemoveParticipant(finish, side);
+                    _participantsCounter--;
+                }
+                else
+                {
+                    _finishes[finish.Right]++;
+                }
+            }
+        }
+
+        public void RemoveParticipant(SectionData finish, String side)
+        {
+            if (side == "left")
+            {
+                finish.Left = null;
+                finish.DistanceLeft = 0;
+            } 
+            else if (side == "right")
+            {
+                finish.Right = null;
+                finish.DistanceRight = 0;
+            }
+        }
         public void MoveParticipants()
         {
             //Initialize
             SectionData nextSection = _positions.First().Value;
             SectionData hiddenSectionData = new SectionData();
-            int counter = 0;
+            bool enteredOnce = false;
             IParticipant participant1 = _positions.Last().Value.Left;
             IParticipant participant2 = _positions.Last().Value.Right;
 
@@ -76,13 +127,16 @@ namespace Controller
             foreach (KeyValuePair<Section, SectionData> kvPair in _positions.Reverse())
             {
                 SectionData currentSectionSD = kvPair.Value;
-
                 if (currentSectionSD.Left != null)
                 {
                     currentSectionSD.DistanceLeft +=
                         currentSectionSD.Left.Equipment.Speed * currentSectionSD.Left.Equipment.Performance;
                     if (currentSectionSD.DistanceLeft >= Section.Length)
                     {
+                        if (kvPair.Key.SectionType == SectionTypes.Finish)
+                        {
+                            CheckFinishes(kvPair.Value, "left");
+                        }
                         MoveParticipantsLeftSection(nextSection, currentSectionSD);
                     }
                 }
@@ -92,28 +146,60 @@ namespace Controller
                         currentSectionSD.Right.Equipment.Speed * currentSectionSD.Right.Equipment.Performance;
                     if (currentSectionSD.DistanceRight >= Section.Length)
                     {
+                        if (kvPair.Key.SectionType == SectionTypes.Finish)
+                        {
+                            CheckFinishes(kvPair.Value, "right");
+                        }
                         MoveParticipantsRightSection(nextSection, currentSectionSD);
                     }
                 }
                 //If you moved it, don't move it again.
-                if (counter == 0)
+                if (!enteredOnce)
                 {
+                    //Check if any of them has moved from the end of the track to the start
                     if (participant1 == _positions.First().Value.Left ||
                         participant1 == _positions.First().Value.Right ||
                         participant2 == _positions.First().Value.Left ||
                         participant2 == _positions.First().Value.Right)
                     {
-                        hideParticipant(nextSection, hiddenSectionData, participant1, participant2);
+                        hideParticipant(_positions.First().Value, hiddenSectionData, participant1, participant2);
                     }
-
-                    counter++;
+                    //So this if condition only executes once at the start of the foreach
+                    enteredOnce = true;
                 }
+
+                //Compare next two sections, backwards
                 nextSection = kvPair.Value;
             }
-            MoveParticipantsLeftSection(_positions.First().Value, hiddenSectionData);
-            MoveParticipantsRightSection(_positions.First().Value, hiddenSectionData);
+
+            //No point on revealing if there is nothing on the hiddensection
+            if (hiddenSectionData.Left != null || hiddenSectionData.Right != null)
+            {
+                RevealParticipant(_positions.First().Value, hiddenSectionData);
+            }
         }
 
+        //No logic for catching up, because they already moved so the logic of catching up is
+        //already there
+        public void RevealParticipant(SectionData nextSection, SectionData hiddenSectionData)
+        {
+            if (hiddenSectionData.Left != null)
+            {
+                nextSection.Left = hiddenSectionData.Left;
+                nextSection.DistanceLeft = hiddenSectionData.DistanceLeft;
+
+                hiddenSectionData.Left = null;
+                hiddenSectionData.DistanceLeft = 0;
+            } 
+            if (hiddenSectionData.Right != null)
+            {
+                nextSection.Right = hiddenSectionData.Right;
+                nextSection.DistanceRight = hiddenSectionData.DistanceRight;
+
+                hiddenSectionData.Right = null;
+                hiddenSectionData.DistanceRight = 0;
+            }
+        }
         public void MoveParticipantsLeftSection(SectionData nextSection, SectionData currentSection)
         {
             if (nextSection.Left == null)
@@ -128,7 +214,7 @@ namespace Controller
             else if (nextSection.Right == null)
             {
                 nextSection.Right = currentSection.Left;
-                nextSection.DistanceRight = currentSection.DistanceLeft;
+                nextSection.DistanceRight = currentSection.DistanceLeft - Section.Length;
                 //Reset
                 currentSection.Left = null;
                 currentSection.DistanceLeft = 0;
@@ -149,7 +235,7 @@ namespace Controller
             else if (nextSection.Left == null)
             {
                 nextSection.Left = currentSection.Right;
-                nextSection.DistanceRight = currentSection.DistanceRight;
+                nextSection.DistanceRight = currentSection.DistanceRight - Section.Length;
                 //Reset
                 currentSection.Right = null;
                 currentSection.DistanceRight = 0;
@@ -163,10 +249,12 @@ namespace Controller
                 _isMoving = true;
                 MoveParticipants();
                 DriversChanged?.Invoke(this, new DriversChangedEventArgs() { Track = this.Track });
+                CheckRaceFinished();
                 _isMoving = false;
             }
 
         }
+
 
         public void Start()
         {
@@ -226,6 +314,33 @@ namespace Controller
                     sectionData.Left = Participants[participantsCounter];
                     _finishes.Add(Participants[participantsCounter], 0);
                     participantsCounter++;
+                }
+            }
+        } 
+        public void CheckRaceFinished()
+        {
+            if (_participantsCounter == 0)
+            {
+                NextRace?.Invoke(this, new EventArgs());
+            }
+        }
+
+        public void CleanupEvents()
+        {
+            Delegate[] delegates = DriversChanged?.GetInvocationList();
+            if (delegates != null)
+            {
+                foreach (Delegate d in delegates)
+                {
+                    DriversChanged -= (EventHandler)d;
+                }
+            }
+            delegates = NextRace?.GetInvocationList();
+            if (delegates != null)
+            {
+                foreach (Delegate d in delegates)
+                {
+                    NextRace -= (EventHandler)d;
                 }
             }
         }

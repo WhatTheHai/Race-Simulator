@@ -32,7 +32,7 @@ namespace Controller
             Car ultrazoef = new Car(10, 10, 90, false);
             Driver videospeler = new Driver("Videospeler", 100, ultrazoef, TeamColors.Yellow);
 
-            Car geenzoef = new Car(10, 6, 80, false);
+            Car geenzoef = new Car(10, 7, 80, false);
             Driver beginner = new Driver("Beginner", 100, geenzoef, TeamColors.Grey);
 
             Car superzoef = new Car(9, 8, 80, false);
@@ -104,6 +104,10 @@ namespace Controller
             if(nextTrack != null)
             {
                 CurrentRace = new Race(nextTrack, Competition.Participants);
+            }
+            else
+            {
+                CurrentRace = null;
             }
         }
     }
