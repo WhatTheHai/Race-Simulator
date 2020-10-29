@@ -13,7 +13,7 @@ namespace Race_Simulator
         private static int trueX, trueY;
         public static void Initialize()
         {
-            Console.CursorVisible = true;
+            Console.CursorVisible = false;
             compass = 1;
             Data.CurrentRace.DriversChanged += OnDriversChanged;
             Data.CurrentRace.NextRace += OnNextRace;
@@ -34,15 +34,15 @@ namespace Race_Simulator
         private static string[] _straightS = { "|  |", "|2 |", "| 1|", "|  |" };
         private static string[] _straightW = { "----", "  2 ", " 1  ", "----" };
 
-        private static string[] _leftN = { "--\\ ", " 2 \\", "  1|", "|  |" };
+        private static string[] _leftN = { "--\\ ", " 1 \\", "  2|", "|  |" };
         private static string[] _leftE = { "|  |", " 1 |", "  2/", "--/ " };
-        private static string[] _leftS = { "|  |", "|1  ", "\\ 2 ", " \\--" };
-        private static string[] _leftW = { " /--", "/ 2 ", "|1  ", "|  |" };
+        private static string[] _leftS = { "|  |", "|2  ", "\\ 1 ", " \\--" };
+        private static string[] _leftW = { " /--", "/2  ", "| 1 ", "|  |" };
 
-        private static string[] _rightN = { " /--", "/ 2 ", "|1  ", "|  |" };
-        private static string[] _rightE = { "--\\ ", " 1 \\", "  2|", "|  |" };
+        private static string[] _rightN = { " /--", "/1  ", "| 2 ", "|  |" };
+        private static string[] _rightE = { "--\\ ", "  1\\", " 2 |", "|  |" };
         private static string[] _rightS = { "|  |", " 2 |", "  1/", "--/ " };
-        private static string[] _rightW = { "|  |", "|1  ", "\\ 2 ", " \\--" };
+        private static string[] _rightW = { "|  |", "|  2", "\\1  ", " \\--" };
         #endregion
 
         public static void DrawTrack(Track track)
@@ -185,8 +185,36 @@ namespace Race_Simulator
         }
         public static string ReplaceStrings(string text, IParticipant first, IParticipant second)
         {
-            text = (first != null) ? text.Replace('1', first.Name[0]) : text.Replace('1', ' ');
-            text = (second != null) ? text.Replace('2', second.Name[0]) : text.Replace('2', ' ');
+            if (first != null)
+            {
+                if (!first.Equipment.IsBroken)
+                {
+                    text = text.Replace('1', first.Name[0]);
+                }
+                else
+                {
+                    text = text.Replace('1', char.ToLower(first.Name[0]));
+                }
+            }
+            else
+            {
+                text = text.Replace('1', ' ');
+            }
+            if (second != null)
+            {
+                if (!second.Equipment.IsBroken)
+                {
+                    text = text.Replace('2', second.Name[0]);
+                }
+                else
+                {
+                    text = text.Replace('2', char.ToLower(second.Name[0]));
+                }
+            }
+            else
+            {
+                text = text.Replace('2', ' ');
+            }
             return text; 
         }
 

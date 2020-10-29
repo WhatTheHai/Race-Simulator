@@ -19,7 +19,7 @@ namespace Controller
         private Dictionary<IParticipant, int> _finishes = new Dictionary<IParticipant, int>();
         private Dictionary<Section, SectionData> _positions = new Dictionary<Section, SectionData>();
         private Timer _timer;
-        private int _rounds = 0;
+        private int _rounds = 1;
         private int _participantsCounter;
         private bool _isMoving = false;
         public event EventHandler DriversChanged;
@@ -114,6 +114,37 @@ namespace Controller
                 finish.DistanceRight = 0;
             }
         }
+        public void RepairOrBreakEquipment()
+        {
+            int baseChance = 10;
+            int roll;
+            foreach (IParticipant participant in Participants)
+            {
+                //Repair
+                if (participant.Equipment.IsBroken)
+                {
+                    // 50% chance to repair every round, mathematically if something is broken
+                    // it'll be broken for 2 rounds on average. (Since it's a geometric series that converges to 2)
+                    roll = _random.Next(0, 2);
+                    if (roll == 1)
+                    {
+                        participant.Equipment.IsBroken = false;
+                        participant.Equipment.Performance -= _random.Next(1, 4);
+                    }
+                }
+                //Break
+                else
+                {
+                    //Lowers the chance of breaking depending on the quality
+                    int chance = baseChance + participant.Equipment.Quality;
+                    roll = _random.Next(0, baseChance);
+                    if (roll == baseChance - 1)
+                    {
+                        participant.Equipment.IsBroken = true;
+                    }
+                }
+            }
+        }
         public void MoveParticipants()
         {
             //Initialize
@@ -129,28 +160,35 @@ namespace Controller
                 SectionData currentSectionSD = kvPair.Value;
                 if (currentSectionSD.Left != null)
                 {
-                    currentSectionSD.DistanceLeft +=
-                        currentSectionSD.Left.Equipment.Speed * currentSectionSD.Left.Equipment.Performance;
-                    if (currentSectionSD.DistanceLeft >= Section.Length)
+                    if (!currentSectionSD.Left.Equipment.IsBroken)
                     {
-                        if (kvPair.Key.SectionType == SectionTypes.Finish)
+                        currentSectionSD.DistanceLeft +=
+                            currentSectionSD.Left.Equipment.Speed * currentSectionSD.Left.Equipment.Performance;
+                        if (currentSectionSD.DistanceLeft >= Section.Length)
                         {
-                            CheckFinishes(kvPair.Value, "left");
+                            if (kvPair.Key.SectionType == SectionTypes.Finish)
+                            {
+                                CheckFinishes(kvPair.Value, "left");
+                            }
+
+                            MoveParticipantsLeftSection(nextSection, currentSectionSD);
                         }
-                        MoveParticipantsLeftSection(nextSection, currentSectionSD);
                     }
                 }
                 if (currentSectionSD.Right != null)
                 {
-                    currentSectionSD.DistanceRight +=
-                        currentSectionSD.Right.Equipment.Speed * currentSectionSD.Right.Equipment.Performance;
-                    if (currentSectionSD.DistanceRight >= Section.Length)
+                    if (!currentSectionSD.Right.Equipment.IsBroken)
                     {
-                        if (kvPair.Key.SectionType == SectionTypes.Finish)
+                        currentSectionSD.DistanceRight +=
+                            currentSectionSD.Right.Equipment.Speed * currentSectionSD.Right.Equipment.Performance;
+                        if (currentSectionSD.DistanceRight >= Section.Length)
                         {
-                            CheckFinishes(kvPair.Value, "right");
+                            if (kvPair.Key.SectionType == SectionTypes.Finish)
+                            {
+                                CheckFinishes(kvPair.Value, "right");
+                            }
+                            MoveParticipantsRightSection(nextSection, currentSectionSD);
                         }
-                        MoveParticipantsRightSection(nextSection, currentSectionSD);
                     }
                 }
                 //If you moved it, don't move it again.
@@ -164,7 +202,7 @@ namespace Controller
                     {
                         hideParticipant(_positions.First().Value, hiddenSectionData, participant1, participant2);
                     }
-                    //So this if condition only executes once at the start of the foreach
+                    //So the if condition only executes once at the start of the foreach
                     enteredOnce = true;
                 }
 
@@ -248,11 +286,11 @@ namespace Controller
             {
                 _isMoving = true;
                 MoveParticipants();
+                RepairOrBreakEquipment();
                 DriversChanged?.Invoke(this, new DriversChangedEventArgs() { Track = this.Track });
                 CheckRaceFinished();
                 _isMoving = false;
             }
-
         }
 
 
@@ -265,8 +303,8 @@ namespace Controller
         {
             foreach(IParticipant participant in Participants)
             {
-                participant.Equipment.Quality = _random.Next(1, 10);
-                participant.Equipment.Performance = _random.Next(1, 100);
+                participant.Equipment.Quality = _random.Next(5, 10);
+                participant.Equipment.Performance = _random.Next(60, 100);
             }
         }
 
@@ -281,6 +319,7 @@ namespace Controller
         //Places all participants in the sections + every participant has their own counter of amount of finishes
         public void PlaceAllParticipants()
         {
+            RandomizeEquipment();
             //Stack instead of queue because you want the first people that you want to add to be at the front of the
             //startSections
             Stack<Section> startSections = new Stack<Section>();

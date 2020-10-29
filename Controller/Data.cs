@@ -20,22 +20,22 @@ namespace Controller
         }
         public static void AddParticipants()
         {
-            Car zoef = new Car(10,10,100,false);
+            Car zoef = new Car(10,100,10,false);
             Driver hai = new Driver("Hai", 100, zoef, TeamColors.Green);
 
-            Car minizoef = new Car(10, 9, 100, false);
+            Car minizoef = new Car(10, 90, 10, false);
             Driver gamer = new Driver("Gamer", 80, minizoef, TeamColors.Blue);
 
-            Car megazoef = new Car(9, 9, 90, false);
+            Car megazoef = new Car(9, 90, 10, false);
             Driver speler = new Driver("Speler", 90, megazoef, TeamColors.Red);
 
-            Car ultrazoef = new Car(10, 10, 90, false);
+            Car ultrazoef = new Car(10, 100, 10, false);
             Driver videospeler = new Driver("Videospeler", 100, ultrazoef, TeamColors.Yellow);
 
-            Car geenzoef = new Car(10, 7, 80, false);
+            Car geenzoef = new Car(10, 70, 10, false);
             Driver beginner = new Driver("Beginner", 100, geenzoef, TeamColors.Grey);
 
-            Car superzoef = new Car(9, 8, 80, false);
+            Car superzoef = new Car(9, 80, 10, false);
             Driver lilith = new Driver("Lilith", 100, superzoef, TeamColors.Red);
 
             Competition.Participants.Add(hai);
