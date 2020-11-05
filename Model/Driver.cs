@@ -12,7 +12,7 @@ namespace Model
         public int Points { get; set; }
         public IEquipment Equipment { get; set; }
         public TeamColors TeamColor { get; set; }
-        public Driver(String name, int points, IEquipment equipment, TeamColors teamColor)
+        public Driver(string name, int points, IEquipment equipment, TeamColors teamColor)
         {
             Name = name;
             Points = points;

@@ -2,8 +2,10 @@
 using Model;
 using System;
 using System.Collections;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 
 namespace Race_Simulator
 {
@@ -47,49 +49,49 @@ namespace Race_Simulator
 
         public static void DrawTrack(Track track)
         {
-            if(track.Sections.Any())
+            if (!track.Sections.Any()) return;
+            TrackSetCursorPosition(track);
+            foreach (var section in track.Sections)
             {
-                TrackSetCursorPosition(track);
-
-                foreach (Section section in track.Sections)
+                switch (section.SectionType)
                 {
-                    switch (section.SectionType)
-                    {
-                        case SectionTypes.StartGrid:
-                            PrintFromCompass(_startN, _startE, _startS, _startW, section);
-                            break;
-                        case SectionTypes.Finish:
-                            PrintFromCompass(_finishN, _finishE, _finishS, _finishW, section);
-                            break;
-                        case SectionTypes.LeftCorner:
-                            PrintFromCompass(_leftN, _leftE, _leftS, _leftW, section);
-                            compass = Rotate(compass, "Left");
-                            break;
-                        case SectionTypes.RightCorner:
-                            PrintFromCompass(_rightN, _rightE, _rightS, _rightW, section);
-                            compass = Rotate(compass, "Right");
-                            break;
-                        case SectionTypes.Straight:
-                            PrintFromCompass(_straightN, _straightE, _straightS, _straightW, section);
-                            break;
-                    }
-                    switch (compass)
-                    {
-                        case 0:
-                            trueY -= 4;
-                            break;
-                        case 1:
-                            trueX += 4;
-                            break;
-                        case 2:
-                            trueY += 4;
-                            break;
-                        case 3:
-                            trueX -= 4;
-                            break;
-                    }
-                    Console.SetCursorPosition(trueX, trueY);
+                    case SectionTypes.StartGrid:
+                        PrintFromCompass(_startN, _startE, _startS, _startW, section);
+                        break;
+                    case SectionTypes.Finish:
+                        PrintFromCompass(_finishN, _finishE, _finishS, _finishW, section);
+                        break;
+                    case SectionTypes.LeftCorner:
+                        PrintFromCompass(_leftN, _leftE, _leftS, _leftW, section);
+                        compass = Rotate(compass, "Left");
+                        break;
+                    case SectionTypes.RightCorner:
+                        PrintFromCompass(_rightN, _rightE, _rightS, _rightW, section);
+                        compass = Rotate(compass, "Right");
+                        break;
+                    case SectionTypes.Straight:
+                        PrintFromCompass(_straightN, _straightE, _straightS, _straightW, section);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
+                switch (compass)
+                {
+                    case 0:
+                        trueY -= 4;
+                        break;
+                    case 1:
+                        trueX += 4;
+                        break;
+                    case 2:
+                        trueY += 4;
+                        break;
+                    case 3:
+                        trueX -= 4;
+                        break;
+                }
+                Console.SetCursorPosition(trueX, trueY);
+                printData();
             }
         }
         public static void TrackSetCursorPosition(Track track)
@@ -134,7 +136,7 @@ namespace Race_Simulator
             Console.SetCursorPosition(-globalX, -globalY);
             compass = 1;
             trueX = -globalX;
-            trueY = -(globalY - 4);
+            trueY = -(globalY - 5); // Callibrate
         }
         public static int Rotate(int Compass, string rotateDirection)
         {
@@ -218,6 +220,14 @@ namespace Race_Simulator
             return text; 
         }
 
+        public static void printData()
+        {
+            var savePoint = new Point(Console.CursorLeft, Console.CursorTop);
+            Console.SetCursorPosition(0,0);
+            Console.WriteLine($"Most points: {Data.Competition.ParticipantPoints.bestParticipant()}");
+            Console.SetCursorPosition(savePoint.X, savePoint.Y);
+        }
+
         public static void OnDriversChanged(object sender, EventArgs e)
         {
             DriversChangedEventArgs driverE = (DriversChangedEventArgs) e;
@@ -232,11 +242,14 @@ namespace Race_Simulator
             //Visualizer itself
             if (Data.CurrentRace != null)
             {
+                Console.Clear();
                 Initialize();
             }
             else
             {
                 Console.WriteLine("All races are finished.");
+                Console.WriteLine($"The winner is: {Data.Competition.ParticipantPoints.bestParticipant()}");
+                Console.WriteLine($"The participant with the best car is: {Data.Competition.ParticipantSpeedPerTrack.bestParticipant()}");
             }
         }
     }

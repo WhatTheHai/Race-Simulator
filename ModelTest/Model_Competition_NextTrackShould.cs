@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Model;
 
-namespace ControllerTest
+namespace ModelTest
 {
     [TestFixture]
     public class Model_Competition_NextTrackShould

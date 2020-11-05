@@ -21,22 +21,22 @@ namespace Controller
         public static void AddParticipants()
         {
             Car zoef = new Car(10,100,10,false);
-            Driver hai = new Driver("Hai", 100, zoef, TeamColors.Green);
+            Driver hai = new Driver("Hai", 0, zoef, TeamColors.Green);
 
             Car minizoef = new Car(10, 90, 10, false);
-            Driver gamer = new Driver("Gamer", 80, minizoef, TeamColors.Blue);
+            Driver gamer = new Driver("Gamer", 0, minizoef, TeamColors.Blue);
 
             Car megazoef = new Car(9, 90, 10, false);
-            Driver speler = new Driver("Speler", 90, megazoef, TeamColors.Red);
+            Driver speler = new Driver("Speler", 0, megazoef, TeamColors.Red);
 
             Car ultrazoef = new Car(10, 100, 10, false);
-            Driver videospeler = new Driver("Videospeler", 100, ultrazoef, TeamColors.Yellow);
+            Driver videospeler = new Driver("Videospeler", 0, ultrazoef, TeamColors.Yellow);
 
             Car geenzoef = new Car(10, 70, 10, false);
-            Driver beginner = new Driver("Beginner", 100, geenzoef, TeamColors.Grey);
+            Driver beginner = new Driver("Beginner", 0, geenzoef, TeamColors.Grey);
 
             Car superzoef = new Car(9, 80, 10, false);
-            Driver lilith = new Driver("Lilith", 100, superzoef, TeamColors.Red);
+            Driver lilith = new Driver("Lilith", 0, superzoef, TeamColors.Red);
 
             Competition.Participants.Add(hai);
             Competition.Participants.Add(gamer);
@@ -104,11 +104,18 @@ namespace Controller
             if(nextTrack != null)
             {
                 CurrentRace = new Race(nextTrack, Competition.Participants);
+                CurrentRace.NextRace += OnNextRace;
             }
             else
             {
                 CurrentRace = null;
             }
+        }
+
+        public static void OnNextRace(object sender, EventArgs e)
+        {
+            Competition.AddPointsToParticipants(CurrentRace.finalScore);
+            Competition.AddParticipantSpeedPerTrack(CurrentRace.Participants, CurrentRace.Track);
         }
     }
 }

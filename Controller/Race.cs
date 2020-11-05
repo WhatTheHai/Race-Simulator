@@ -24,7 +24,7 @@ namespace Controller
         private bool _isMoving = false;
         public event EventHandler DriversChanged;
         public event EventHandler NextRace;
-
+        public Queue<IParticipant> finalScore = new Queue<IParticipant>();
 
         public SectionData GetSectionData(Section section)
         {
@@ -72,7 +72,7 @@ namespace Controller
             }
         }
 
-        public void CheckFinishes(SectionData finish, String side)
+        public void CheckFinishes(SectionData finish, string side)
         {
             if (finish.Left != null && side == "left")
             {
@@ -101,44 +101,59 @@ namespace Controller
             }
         }
 
-        public void RemoveParticipant(SectionData finish, String side)
+        public void RemoveParticipant(SectionData finish, string side)
         {
             if (side == "left")
             {
+                AddToFinalScore(finish.Left);
                 finish.Left = null;
                 finish.DistanceLeft = 0;
             } 
             else if (side == "right")
             {
+                AddToFinalScore(finish.Right);
                 finish.Right = null;
                 finish.DistanceRight = 0;
             }
         }
+
+        public void AddToFinalScore(IParticipant participant)
+        {
+            finalScore.Enqueue(participant);
+        }
         public void RepairOrBreakEquipment()
         {
-            int baseChance = 10;
-            int roll;
+
+            const int baseChance = 5;
             foreach (IParticipant participant in Participants)
             {
                 //Repair
                 if (participant.Equipment.IsBroken)
                 {
+                    //Everytime it's broken add the time.
+                    Data.Competition.AddBrokenTime(participant.Name, DateTime.Now.Subtract(StartTime));
                     // 50% chance to repair every round, mathematically if something is broken
                     // it'll be broken for 2 rounds on average. (Since it's a geometric series that converges to 2)
-                    roll = _random.Next(0, 2);
-                    if (roll == 1)
+                    int roll = _random.Next(0, 2);
+                    if (roll != 1) continue;
+                    participant.Equipment.IsBroken = false;
+                    if (participant.Equipment.Speed >= 10)
                     {
-                        participant.Equipment.IsBroken = false;
-                        participant.Equipment.Performance -= _random.Next(1, 4);
+                        participant.Equipment.Speed -= _random.Next(0, 2);
                     }
+                    else
+                    {
+                        participant.Equipment.Speed++;
+                    }
+                    participant.Equipment.Performance -= _random.Next(0, 3);
                 }
                 //Break
                 else
                 {
                     //Lowers the chance of breaking depending on the quality
-                    int chance = baseChance + participant.Equipment.Quality;
-                    roll = _random.Next(0, baseChance);
-                    if (roll == baseChance - 1)
+                    int chance = baseChance + participant.Equipment.Quality*2;
+                    int roll = _random.Next(0, chance);
+                    if (roll == chance - 1)
                     {
                         participant.Equipment.IsBroken = true;
                     }
@@ -160,6 +175,7 @@ namespace Controller
                 SectionData currentSectionSD = kvPair.Value;
                 if (currentSectionSD.Left != null)
                 {
+                    SaveSectionTimes(kvPair.Key, kvPair.Value, DateTime.Now, "left");
                     if (!currentSectionSD.Left.Equipment.IsBroken)
                     {
                         currentSectionSD.DistanceLeft +=
@@ -177,6 +193,7 @@ namespace Controller
                 }
                 if (currentSectionSD.Right != null)
                 {
+                    SaveSectionTimes(kvPair.Key, kvPair.Value, DateTime.Now, "right");
                     if (!currentSectionSD.Right.Equipment.IsBroken)
                     {
                         currentSectionSD.DistanceRight +=
@@ -287,6 +304,7 @@ namespace Controller
                 _isMoving = true;
                 MoveParticipants();
                 RepairOrBreakEquipment();
+                StartTime = DateTime.Now;
                 DriversChanged?.Invoke(this, new DriversChangedEventArgs() { Track = this.Track });
                 CheckRaceFinished();
                 _isMoving = false;
@@ -297,6 +315,7 @@ namespace Controller
         public void Start()
         {
             _timer.Start();
+            StartTime = DateTime.Now;
         }
 
         public void RandomizeEquipment()
@@ -355,7 +374,25 @@ namespace Controller
                     participantsCounter++;
                 }
             }
-        } 
+        }
+        public void SaveSectionTimes(Section section, SectionData sectionData, DateTime timePast, string side)
+        {
+            String name = "";
+            switch (side)
+            {
+                case "left":
+                    name = sectionData.Left.Name;
+                    break;
+                case "right":
+                    name = sectionData.Right.Name;
+                    break;
+                case "default":
+                    break;
+            }
+
+            TimeSpan timeTaken = timePast.Subtract(StartTime);
+            Data.Competition.AddSectionTimesToParticipants(name, section, timeTaken);
+        }
         public void CheckRaceFinished()
         {
             if (_participantsCounter == 0)
@@ -369,7 +406,7 @@ namespace Controller
             Delegate[] delegates = DriversChanged?.GetInvocationList();
             if (delegates != null)
             {
-                foreach (Delegate d in delegates)
+                foreach (var d in delegates)
                 {
                     DriversChanged -= (EventHandler)d;
                 }
@@ -377,7 +414,7 @@ namespace Controller
             delegates = NextRace?.GetInvocationList();
             if (delegates != null)
             {
-                foreach (Delegate d in delegates)
+                foreach (var d in delegates)
                 {
                     NextRace -= (EventHandler)d;
                 }

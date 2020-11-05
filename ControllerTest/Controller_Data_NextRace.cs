@@ -14,7 +14,7 @@ namespace ControllerTest
         [SetUp]
         public void SetUp()
         {
-
+            _competition = new Competition();
             SectionTypes[] sections1 =
             {
                 SectionTypes.StartGrid,
@@ -30,9 +30,11 @@ namespace ControllerTest
             {
                 SectionTypes.StartGrid,
                 SectionTypes.LeftCorner,
+                SectionTypes.Straight,
                 SectionTypes.LeftCorner,
                 SectionTypes.Finish,
                 SectionTypes.LeftCorner,
+                SectionTypes.Straight,
                 SectionTypes.LeftCorner
             };
             Track testTrack2 = new Track("testTrack2", sections2);
@@ -50,11 +52,47 @@ namespace ControllerTest
         [Test]
         public void NextRace_TwoTracks_CurrentTrack()
         {
-            Assert.IsTrue(true);
+            SectionTypes[] sections1 =
+            {
+                SectionTypes.StartGrid,
+                SectionTypes.RightCorner,
+                SectionTypes.RightCorner,
+                SectionTypes.Finish,
+                SectionTypes.RightCorner,
+                SectionTypes.RightCorner
+            };
+            Track testTrack1 = new Track("testTrack1", sections1);
+            Track currentTrack = _competition.NextTrack();
+            Assert.AreEqual(testTrack1.Name, currentTrack.Name);
+            Assert.AreEqual(testTrack1.Sections.Count, currentTrack.Sections.Count);
         }
-        //[Test]
+        [Test]
         public void NextRace_TwoTracks_NextTrack()
         {
+            SectionTypes[] sections2 =
+            {
+                SectionTypes.StartGrid,
+                SectionTypes.LeftCorner,
+                SectionTypes.Straight,
+                SectionTypes.LeftCorner,
+                SectionTypes.Finish,
+                SectionTypes.LeftCorner,
+                SectionTypes.Straight,
+                SectionTypes.LeftCorner
+            };
+            Track testTrack2 = new Track("testTrack2", sections2);
+            _competition.NextTrack();
+            Track currentTrack = _competition.NextTrack();
+            Assert.AreEqual(testTrack2.Name, currentTrack.Name);
+            Assert.AreEqual(testTrack2.Sections.Count, currentTrack.Sections.Count);
+        }
+        [Test]
+        public void NextRace_TwoTracks_NextTrackToNull()
+        {
+            _competition.NextTrack();
+            _competition.NextTrack();
+            Track currentTrack = _competition.NextTrack();
+            Assert.IsNull(currentTrack);
         }
     }
 }
