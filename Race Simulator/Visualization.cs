@@ -11,12 +11,12 @@ namespace Race_Simulator
 {
     public static class Visualization
     {
-        private static int compass;
+        private static int _compass;
         private static int trueX, trueY;
         public static void Initialize()
         {
             Console.CursorVisible = false;
-            compass = 1;
+            _compass = 1;
             Data.CurrentRace.DriversChanged += OnDriversChanged;
             Data.CurrentRace.NextRace += OnNextRace;
         }
@@ -63,11 +63,11 @@ namespace Race_Simulator
                         break;
                     case SectionTypes.LeftCorner:
                         PrintFromCompass(_leftN, _leftE, _leftS, _leftW, section);
-                        compass = Rotate(compass, "Left");
+                        _compass = Rotate(_compass, "Left");
                         break;
                     case SectionTypes.RightCorner:
                         PrintFromCompass(_rightN, _rightE, _rightS, _rightW, section);
-                        compass = Rotate(compass, "Right");
+                        _compass = Rotate(_compass, "Right");
                         break;
                     case SectionTypes.Straight:
                         PrintFromCompass(_straightN, _straightE, _straightS, _straightW, section);
@@ -75,7 +75,7 @@ namespace Race_Simulator
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-                switch (compass)
+                switch (_compass)
                 {
                     case 0:
                         trueY -= 4;
@@ -103,13 +103,13 @@ namespace Race_Simulator
                 switch (section.SectionType)
                 {
                     case SectionTypes.LeftCorner:
-                        compass = Rotate(compass, "Left");
+                        _compass = Rotate(_compass, "Left");
                         break;
                     case SectionTypes.RightCorner:
-                        compass = Rotate(compass, "Right");
+                        _compass = Rotate(_compass, "Right");
                         break;
                 }
-                switch (compass)
+                switch (_compass)
                 {
                     case 0:
                         y -= 4;
@@ -134,7 +134,7 @@ namespace Race_Simulator
                 }
             }
             Console.SetCursorPosition(-globalX, -globalY);
-            compass = 1;
+            _compass = 1;
             trueX = -globalX;
             trueY = -(globalY - 5); // Callibrate
         }
@@ -144,11 +144,11 @@ namespace Race_Simulator
             {
                 case "Left":
                     Compass = (Compass < 1) ? 3 : Compass -= 1;
-                    //If compass == 0, reset to the left, otherwise countdown.
+                    //If _compass == 0, reset to the left, otherwise countdown.
                     return Compass;
                 case "Right":
                     Compass = (Compass > 2) ? 0 : Compass += 1;
-                    //Same as case left, but instead if compass == 3, reset to north
+                    //Same as case left, but instead if _compass == 3, reset to north
                     return Compass;
                 default:
                     return -1;
@@ -169,7 +169,7 @@ namespace Race_Simulator
         }
         public static void PrintFromCompass(string[] north, string[] east, string[] south, string[] west, Section section)
         {
-            switch (compass)
+            switch (_compass)
             {
                 case 0:
                     PrintSection(north, section);

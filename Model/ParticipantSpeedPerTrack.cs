@@ -30,7 +30,7 @@ namespace Model
                 trackName = pspt.Track.Name;
                 name = pspt.Name;
             }
-            string nameAndTrack = $"{name} in track {trackName}"; 
+            string nameAndTrack = $"{name} in de track {trackName}"; 
             return nameAndTrack;
         }
     }

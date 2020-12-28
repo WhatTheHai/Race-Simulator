@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace ModelTest
 {
-    class Model_SectionData
+    public class Model_SectionData
     {
         private Driver _driver;
         private Driver _driver2;

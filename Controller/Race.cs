@@ -19,7 +19,7 @@ namespace Controller
         private Dictionary<IParticipant, int> _finishes = new Dictionary<IParticipant, int>();
         private Dictionary<Section, SectionData> _positions = new Dictionary<Section, SectionData>();
         private Timer _timer;
-        private int _rounds = 1;
+        private int _rounds = 1; //Total rounds is _rounds + 1
         private int _participantsCounter;
         private bool _isMoving = false;
         public event EventHandler DriversChanged;
@@ -52,7 +52,7 @@ namespace Controller
         //section length to the distance
         public void hideParticipant(SectionData nextSection, SectionData hiddenSectionData, IParticipant participant1, IParticipant participant2)
         {
-            //Left has to be the participant has had been moved, so either participant1 or participant2
+            //Left has to be the participant has been moved, so either participant1 or participant2
             if (nextSection.Left != null && (nextSection.Left == participant1 || nextSection.Left == participant2))
             {
                 hiddenSectionData.Left = nextSection.Left;
@@ -74,7 +74,7 @@ namespace Controller
 
         public void CheckFinishes(SectionData finish, string side)
         {
-            if (finish.Left != null && side == "left")
+            if (finish.Left != null && side == "left" && !finish.Left.Equipment.IsBroken)
             {
                 if (_finishes[finish.Left] >= _rounds)
                 {
@@ -87,7 +87,7 @@ namespace Controller
                 }
             }
 
-            if (finish.Right != null && side == "right")
+            if (finish.Right != null && side == "right" && !finish.Right.Equipment.IsBroken)
             {
                 if (_finishes[finish.Right] >= _rounds)
                 {
@@ -133,7 +133,7 @@ namespace Controller
                     //Everytime it's broken add the time.
                     Data.Competition.AddBrokenTime(participant.Name, DateTime.Now.Subtract(StartTime));
                     // 50% chance to repair every round, mathematically if something is broken
-                    // it'll be broken for 2 rounds on average. (Since it's a geometric series that converges to 2)
+                    // it'll be broken for 2 cycles on average. (Since it's a geometric series that converges to 2)
                     int roll = _random.Next(0, 2);
                     if (roll != 1) continue;
                     participant.Equipment.IsBroken = false;
@@ -178,8 +178,10 @@ namespace Controller
                     SaveSectionTimes(kvPair.Key, kvPair.Value, DateTime.Now, "left");
                     if (!currentSectionSD.Left.Equipment.IsBroken)
                     {
-                        currentSectionSD.DistanceLeft +=
-                            currentSectionSD.Left.Equipment.Speed * currentSectionSD.Left.Equipment.Performance;
+                        if (Section.Length > currentSectionSD.DistanceLeft)
+                        {
+                            currentSectionSD.DistanceLeft += currentSectionSD.Left.Equipment.Speed * currentSectionSD.Left.Equipment.Performance;
+                        }
                         if (currentSectionSD.DistanceLeft >= Section.Length)
                         {
                             if (kvPair.Key.SectionType == SectionTypes.Finish)
@@ -196,8 +198,10 @@ namespace Controller
                     SaveSectionTimes(kvPair.Key, kvPair.Value, DateTime.Now, "right");
                     if (!currentSectionSD.Right.Equipment.IsBroken)
                     {
-                        currentSectionSD.DistanceRight +=
-                            currentSectionSD.Right.Equipment.Speed * currentSectionSD.Right.Equipment.Performance;
+                        if (Section.Length > currentSectionSD.DistanceRight)
+                        {
+                            currentSectionSD.DistanceRight += currentSectionSD.Right.Equipment.Speed * currentSectionSD.Right.Equipment.Performance;
+                        }
                         if (currentSectionSD.DistanceRight >= Section.Length)
                         {
                             if (kvPair.Key.SectionType == SectionTypes.Finish)
