@@ -124,7 +124,7 @@ namespace Controller
         public void RepairOrBreakEquipment()
         {
 
-            const int baseChance = 5;
+            const int baseChance = 8;
             foreach (IParticipant participant in Participants)
             {
                 //Repair
