@@ -10,6 +10,7 @@ namespace Model
         Green,
         Yellow,
         Grey,
-        Blue
+        Blue,
+        Purple
     }
 }

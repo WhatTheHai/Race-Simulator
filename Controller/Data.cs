@@ -36,7 +36,7 @@ namespace Controller
             Driver beginner = new Driver("Beginner", 0, geenzoef, TeamColors.Grey);
 
             Car superzoef = new Car(9, 80, 10, false);
-            Driver lilith = new Driver("Lilith", 0, superzoef, TeamColors.Red);
+            Driver lilith = new Driver("Lilith", 0, superzoef, TeamColors.Purple);
 
             Competition.Participants.Add(hai);
             Competition.Participants.Add(gamer);

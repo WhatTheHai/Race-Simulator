@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Controller", "Controller\Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControllerTest", "ControllerTest\ControllerTest.csproj", "{7A178D93-D06B-49FB-A342-DA02569446CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelTest", "ModelTest\ModelTest.csproj", "{F747976C-F8F1-41D1-896F-CEB6D070D14D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelTest", "ModelTest\ModelTest.csproj", "{F747976C-F8F1-41D1-896F-CEB6D070D14D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaceWPF", "RaceWPF\RaceWPF.csproj", "{0CA4C4D5-B320-4399-8C3D-DD74979AFC0B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{F747976C-F8F1-41D1-896F-CEB6D070D14D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F747976C-F8F1-41D1-896F-CEB6D070D14D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F747976C-F8F1-41D1-896F-CEB6D070D14D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CA4C4D5-B320-4399-8C3D-DD74979AFC0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CA4C4D5-B320-4399-8C3D-DD74979AFC0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CA4C4D5-B320-4399-8C3D-DD74979AFC0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CA4C4D5-B320-4399-8C3D-DD74979AFC0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

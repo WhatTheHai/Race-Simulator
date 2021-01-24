@@ -1,0 +1,81 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\Cars\broken.png" />
+    <None Remove="Assets\Cars\East\Blue.png" />
+    <None Remove="Assets\Cars\East\Green.png" />
+    <None Remove="Assets\Cars\East\Grey.png" />
+    <None Remove="Assets\Cars\East\Purple.png" />
+    <None Remove="Assets\Cars\East\Red.png" />
+    <None Remove="Assets\Cars\East\Yellow.png" />
+    <None Remove="Assets\Cars\North\Blue.png" />
+    <None Remove="Assets\Cars\North\Green.png" />
+    <None Remove="Assets\Cars\North\Grey.png" />
+    <None Remove="Assets\Cars\North\Purple.png" />
+    <None Remove="Assets\Cars\North\Red.png" />
+    <None Remove="Assets\Cars\North\Yellow.png" />
+    <None Remove="Assets\Cars\South\Blue.png" />
+    <None Remove="Assets\Cars\South\Green.png" />
+    <None Remove="Assets\Cars\South\Grey.png" />
+    <None Remove="Assets\Cars\South\Purple.png" />
+    <None Remove="Assets\Cars\South\Red.png" />
+    <None Remove="Assets\Cars\South\Yellow.png" />
+    <None Remove="Assets\Cars\West\Blue.png" />
+    <None Remove="Assets\Cars\West\Green.png" />
+    <None Remove="Assets\Cars\West\Grey.png" />
+    <None Remove="Assets\Cars\West\Purple.png" />
+    <None Remove="Assets\Cars\West\Red.png" />
+    <None Remove="Assets\Cars\West\Yellow.png" />
+    <None Remove="Assets\Tracks\CornerNE.png" />
+    <None Remove="Assets\Tracks\CornerNW.png" />
+    <None Remove="Assets\Tracks\CornerSE.png" />
+    <None Remove="Assets\Tracks\CornerSW.png" />
+    <None Remove="Assets\Tracks\Finish.png" />
+    <None Remove="Assets\Tracks\StartGrid.png" />
+    <None Remove="Assets\Tracks\StraightHori.png" />
+    <None Remove="Assets\Tracks\StraightVert.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Cars\broken.png" />
+    <Content Include="Assets\Cars\East\Blue.png" />
+    <Content Include="Assets\Cars\East\Green.png" />
+    <Content Include="Assets\Cars\East\Grey.png" />
+    <Content Include="Assets\Cars\East\Purple.png" />
+    <Content Include="Assets\Cars\East\Red.png" />
+    <Content Include="Assets\Cars\East\Yellow.png" />
+    <Content Include="Assets\Cars\North\Blue.png" />
+    <Content Include="Assets\Cars\North\Green.png" />
+    <Content Include="Assets\Cars\North\Grey.png" />
+    <Content Include="Assets\Cars\North\Purple.png" />
+    <Content Include="Assets\Cars\North\Red.png" />
+    <Content Include="Assets\Cars\North\Yellow.png" />
+    <Content Include="Assets\Cars\South\Blue.png" />
+    <Content Include="Assets\Cars\South\Green.png" />
+    <Content Include="Assets\Cars\South\Grey.png" />
+    <Content Include="Assets\Cars\South\Purple.png" />
+    <Content Include="Assets\Cars\South\Red.png" />
+    <Content Include="Assets\Cars\South\Yellow.png" />
+    <Content Include="Assets\Cars\West\Blue.png" />
+    <Content Include="Assets\Cars\West\Green.png" />
+    <Content Include="Assets\Cars\West\Grey.png" />
+    <Content Include="Assets\Cars\West\Purple.png" />
+    <Content Include="Assets\Cars\West\Red.png" />
+    <Content Include="Assets\Cars\West\Yellow.png" />
+    <Content Include="Assets\Tracks\CornerNE.png" />
+    <Content Include="Assets\Tracks\CornerNW.png" />
+    <Content Include="Assets\Tracks\CornerSE.png" />
+    <Content Include="Assets\Tracks\CornerSW.png" />
+    <Content Include="Assets\Tracks\Finish.png" />
+    <Content Include="Assets\Tracks\StartGrid.png" />
+    <Content Include="Assets\Tracks\StraightHori.png" />
+    <Content Include="Assets\Tracks\StraightVert.png" />
+  </ItemGroup>
+
+</Project>
