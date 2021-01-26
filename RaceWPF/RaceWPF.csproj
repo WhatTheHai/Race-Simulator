@@ -11,18 +11,22 @@
     <Compile Remove="Assets\Cars\North\**" />
     <Compile Remove="Assets\Cars\South\**" />
     <Compile Remove="Assets\Cars\West\**" />
+    <Compile Remove="Backup\**" />
     <EmbeddedResource Remove="Assets\Cars\East\**" />
     <EmbeddedResource Remove="Assets\Cars\North\**" />
     <EmbeddedResource Remove="Assets\Cars\South\**" />
     <EmbeddedResource Remove="Assets\Cars\West\**" />
+    <EmbeddedResource Remove="Backup\**" />
     <None Remove="Assets\Cars\East\**" />
     <None Remove="Assets\Cars\North\**" />
     <None Remove="Assets\Cars\South\**" />
     <None Remove="Assets\Cars\West\**" />
+    <None Remove="Backup\**" />
     <Page Remove="Assets\Cars\East\**" />
     <Page Remove="Assets\Cars\North\**" />
     <Page Remove="Assets\Cars\South\**" />
     <Page Remove="Assets\Cars\West\**" />
+    <Page Remove="Backup\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,30 +44,6 @@
     <None Remove="Assets\Cars\Cars\Purple.png" />
     <None Remove="Assets\Cars\Cars\Red.png" />
     <None Remove="Assets\Cars\Cars\Yellow.png" />
-    <None Remove="Assets\Cars\Turned\East\Blue.png" />
-    <None Remove="Assets\Cars\Turned\East\Green.png" />
-    <None Remove="Assets\Cars\Turned\East\Grey.png" />
-    <None Remove="Assets\Cars\Turned\East\Purple.png" />
-    <None Remove="Assets\Cars\Turned\East\Red.png" />
-    <None Remove="Assets\Cars\Turned\East\Yellow.png" />
-    <None Remove="Assets\Cars\Turned\North\Blue.png" />
-    <None Remove="Assets\Cars\Turned\North\Green.png" />
-    <None Remove="Assets\Cars\Turned\North\Grey.png" />
-    <None Remove="Assets\Cars\Turned\North\Purple.png" />
-    <None Remove="Assets\Cars\Turned\North\Red.png" />
-    <None Remove="Assets\Cars\Turned\North\Yellow.png" />
-    <None Remove="Assets\Cars\Turned\South\Blue.png" />
-    <None Remove="Assets\Cars\Turned\South\Green.png" />
-    <None Remove="Assets\Cars\Turned\South\Grey.png" />
-    <None Remove="Assets\Cars\Turned\South\Purple.png" />
-    <None Remove="Assets\Cars\Turned\South\Red.png" />
-    <None Remove="Assets\Cars\Turned\South\Yellow.png" />
-    <None Remove="Assets\Cars\Turned\West\Blue.png" />
-    <None Remove="Assets\Cars\Turned\West\Green.png" />
-    <None Remove="Assets\Cars\Turned\West\Grey.png" />
-    <None Remove="Assets\Cars\Turned\West\Purple.png" />
-    <None Remove="Assets\Cars\Turned\West\Red.png" />
-    <None Remove="Assets\Cars\Turned\West\Yellow.png" />
     <None Remove="Assets\Tracks\Corner.png" />
     <None Remove="Assets\Tracks\CornerNE.png" />
     <None Remove="Assets\Tracks\CornerNW.png" />
@@ -74,51 +54,45 @@
     <None Remove="Assets\Tracks\Straight.png" />
     <None Remove="Assets\Tracks\StraightHori.png" />
     <None Remove="Assets\Tracks\StraightVert.png" />
-    <None Remove="Assets\Tracks\Turned\CornerNE.png" />
-    <None Remove="Assets\Tracks\Turned\CornerNW.png" />
-    <None Remove="Assets\Tracks\Turned\CornerSE.png" />
-    <None Remove="Assets\Tracks\Turned\CornerSW.png" />
-    <None Remove="Assets\Tracks\Turned\StraightHori.png" />
-    <None Remove="Assets\Tracks\Turned\StraightVert.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Assets\Cars\Broken\Blue.png" />
-    <Content Include="Assets\Cars\Broken\Green.png" />
-    <Content Include="Assets\Cars\Broken\Grey.png" />
-    <Content Include="Assets\Cars\Broken\Purple.png" />
-    <Content Include="Assets\Cars\Broken\Red.png" />
-    <Content Include="Assets\Cars\Broken\Yellow.png" />
-    <Content Include="Assets\Cars\Cars\Blue.png" />
-    <Content Include="Assets\Cars\Cars\Green.png" />
-    <Content Include="Assets\Cars\Cars\Grey.png" />
-    <Content Include="Assets\Cars\Cars\Purple.png" />
-    <Content Include="Assets\Cars\Cars\Red.png" />
-    <Content Include="Assets\Cars\Cars\Yellow.png" />
-    <Content Include="Assets\Cars\Turned\East\Blue.png" />
-    <Content Include="Assets\Cars\Turned\East\Green.png" />
-    <Content Include="Assets\Cars\Turned\East\Grey.png" />
-    <Content Include="Assets\Cars\Turned\East\Purple.png" />
-    <Content Include="Assets\Cars\Turned\East\Red.png" />
-    <Content Include="Assets\Cars\Turned\East\Yellow.png" />
-    <Content Include="Assets\Cars\Turned\North\Blue.png" />
-    <Content Include="Assets\Cars\Turned\North\Green.png" />
-    <Content Include="Assets\Cars\Turned\North\Grey.png" />
-    <Content Include="Assets\Cars\Turned\North\Purple.png" />
-    <Content Include="Assets\Cars\Turned\North\Red.png" />
-    <Content Include="Assets\Cars\Turned\North\Yellow.png" />
-    <Content Include="Assets\Cars\Turned\South\Blue.png" />
-    <Content Include="Assets\Cars\Turned\South\Green.png" />
-    <Content Include="Assets\Cars\Turned\South\Grey.png" />
-    <Content Include="Assets\Cars\Turned\South\Purple.png" />
-    <Content Include="Assets\Cars\Turned\South\Red.png" />
-    <Content Include="Assets\Cars\Turned\South\Yellow.png" />
-    <Content Include="Assets\Cars\Turned\West\Blue.png" />
-    <Content Include="Assets\Cars\Turned\West\Green.png" />
-    <Content Include="Assets\Cars\Turned\West\Grey.png" />
-    <Content Include="Assets\Cars\Turned\West\Purple.png" />
-    <Content Include="Assets\Cars\Turned\West\Red.png" />
-    <Content Include="Assets\Cars\Turned\West\Yellow.png" />
+    <Content Include="Assets\Cars\Broken\Blue.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Cars\Broken\Green.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Cars\Broken\Grey.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Cars\Broken\Purple.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Cars\Broken\Red.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Cars\Broken\Yellow.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Cars\Cars\Blue.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Cars\Cars\Green.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Cars\Cars\Grey.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Cars\Cars\Purple.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Cars\Cars\Red.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Cars\Cars\Yellow.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Tracks\Corner.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -131,12 +105,6 @@
     <Content Include="Assets\Tracks\Straight.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Tracks\Turned\CornerNE.png" />
-    <Content Include="Assets\Tracks\Turned\CornerNW.png" />
-    <Content Include="Assets\Tracks\Turned\CornerSE.png" />
-    <Content Include="Assets\Tracks\Turned\CornerSW.png" />
-    <Content Include="Assets\Tracks\Turned\StraightHori.png" />
-    <Content Include="Assets\Tracks\Turned\StraightVert.png" />
   </ItemGroup>
 
   <ItemGroup>

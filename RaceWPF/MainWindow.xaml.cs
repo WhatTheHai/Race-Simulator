@@ -26,9 +26,11 @@ namespace RaceWPF
         public MainWindow()
         {
             Data.Initialize();
+            
             ImageCache.Initialize();
-            InitializeComponent();
             Data.CurrentRace.DriversChanged += OnDriversChanged;
+            Data.CurrentRace.NextRace += OnNextRace;
+            InitializeComponent();
         }
 
         public void OnDriversChanged(object sender, EventArgs e)
@@ -41,6 +43,23 @@ namespace RaceWPF
                     this.TrackImg.Source = null;
                     this.TrackImg.Source = Visualization.DrawTrack(driverE.Track);
                 }));
+        }
+
+        public void OnNextRace(object sender, EventArgs e)
+        {
+            ImageCache.ClearCache();
+            Data.CurrentRace.CleanupEvents();
+            Data.NextRace();
+            if (Data.CurrentRace != null)
+            {
+                Data.CurrentRace.DriversChanged += OnDriversChanged;
+                Data.CurrentRace.NextRace += OnNextRace;
+                Data.CurrentRace.Start();
+            }
+            else
+            {
+                ImageCache.ClearCache();
+            }
         }
     }
 }

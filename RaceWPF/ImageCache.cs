@@ -23,11 +23,6 @@ namespace RaceWPF
             if(!_bitmapCache.ContainsKey(pathName))
                 _bitmapCache.Add(pathName, new Bitmap(pathName));
             return _bitmapCache[pathName];
-            /*if (_bitmapCache.ContainsKey(pathName))
-                return _bitmapCache[pathName];
-            Bitmap img = new Bitmap(pathName);
-            _bitmapCache.Add(pathName, img);
-            return img;*/
         }
         public static Bitmap CreateEmptyBitmap(int width, int height)
         {
@@ -37,7 +32,7 @@ namespace RaceWPF
 
             _bitmapCache.Add(emptyKey, new Bitmap(width, height));
             Graphics g = Graphics.FromImage(_bitmapCache[emptyKey]);
-            g.FillRectangle(new SolidBrush(Color.White),0,0, width, height);
+            g.FillRectangle(new SolidBrush(Color.LightGreen),0,0, width, height);
             return (Bitmap)_bitmapCache[emptyKey].Clone();
         }
         public static void ClearCache()

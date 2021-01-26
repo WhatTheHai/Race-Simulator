@@ -19,7 +19,7 @@ namespace Controller
         private Dictionary<IParticipant, int> _finishes = new Dictionary<IParticipant, int>();
         private Dictionary<Section, SectionData> _positions = new Dictionary<Section, SectionData>();
         private Timer _timer;
-        private int _rounds = 1; //Total rounds is _rounds + 1
+        private int _rounds = 0; //Total rounds is _rounds + 1
         private int _participantsCounter;
         private bool _isMoving = false;
         public event EventHandler DriversChanged;
@@ -320,6 +320,11 @@ namespace Controller
         {
             _timer.Start();
             StartTime = DateTime.Now;
+        }
+
+        public void Stop()
+        {
+            _timer.Stop();
         }
 
         public void RandomizeEquipment()

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 using System.Windows.Media.Imaging;
+using Controller;
 using Model;
 
 namespace RaceWPF
@@ -34,8 +36,9 @@ namespace RaceWPF
         {
             CalculateWidthAndHeight(track);
             Bitmap noTrack = ImageCache.CreateEmptyBitmap(_globalX* trackSizePx, _globalY* trackSizePx);
-            Bitmap emptyTrack = PutTrack(noTrack, track); 
-            return ImageCache.CreateBitmapSourceFromGdiBitmap(emptyTrack);
+            Bitmap emptyTrack = PutTrack(noTrack, track);
+            Bitmap filledTrack = PutParticipants(emptyTrack, track);
+            return ImageCache.CreateBitmapSourceFromGdiBitmap(filledTrack);
         }
 
         public static void CalculateWidthAndHeight(Track track)
@@ -217,11 +220,14 @@ namespace RaceWPF
                 switch (section.SectionType)
                 {
                     case SectionTypes.StartGrid: case SectionTypes.Finish: case SectionTypes.Straight:
+                        PrintCar(bitmap, section, currentX, currentY, compass);
                         break;
                     case SectionTypes.LeftCorner:
+                        PrintCar(bitmap, section, currentX, currentY, compass);
                         compass = (compass < 1) ? 3 : compass -= 1;
                         break;
                     case SectionTypes.RightCorner:
+                        PrintCar(bitmap, section, currentX, currentY, compass);
                         compass = (compass > 2) ? 0 : compass += 1;
                         break;
                     default:
@@ -245,6 +251,76 @@ namespace RaceWPF
             }
 
             return bitmap;
+        }
+
+        public static Bitmap PrintCar(Bitmap bitmap, Section section, int x, int y, int compass)
+        {
+            Graphics g = Graphics.FromImage(bitmap);
+            SectionData sd = Data.CurrentRace.GetSectionData(section);
+            int xLeft, yLeft, xRight, yRight;
+            xLeft = yLeft = xRight = yRight = 0;
+            DeterminePos(ref xLeft,ref yLeft,ref xRight,ref yRight, compass);
+            if (sd.Left != null)
+            {
+                string leftColour = GetTeamColour(sd.Left.TeamColor, sd.Left.Equipment.IsBroken);
+                Bitmap leftCar = new Bitmap(ImageCache.GetImgBitmap(leftColour));
+                g.DrawImage(RotateAsset(leftCar, compass, "straight"), new Point(x * trackSizePx+xLeft, y * trackSizePx+yLeft));
+            }
+            if (sd.Right != null)
+            {
+                string rightColour = GetTeamColour(sd.Right.TeamColor, sd.Right.Equipment.IsBroken);
+                Bitmap rightCar = new Bitmap(ImageCache.GetImgBitmap(rightColour));
+                g.DrawImage(RotateAsset(rightCar, compass, "straight"), new Point(x * trackSizePx+xRight, y * trackSizePx+yRight));
+            }
+
+            return bitmap;
+        }
+
+        public static string GetTeamColour(TeamColors teamColor, bool brokenStatus)
+        {
+            return teamColor switch
+            {
+                TeamColors.Red => brokenStatus ? _redBroken : _red,
+                TeamColors.Green => brokenStatus ? _greenBroken : _green,
+                TeamColors.Yellow => brokenStatus ? _yellowBroken : _yellow,
+                TeamColors.Grey => brokenStatus ? _greyBroken : _grey,
+                TeamColors.Blue => brokenStatus ? _blueBroken : _blue,
+                TeamColors.Purple => brokenStatus ? _purpleBroken : _purple,
+                _ => throw new ArgumentOutOfRangeException(nameof(teamColor), teamColor, null)
+            };
+        }
+
+        public static void DeterminePos(ref int xLeft, ref int yLeft, ref int xRight, ref int yRight, int compass)
+        {
+            switch (compass)
+            {
+                case 0:
+                    xLeft = 20;
+                    yLeft = 20;
+                    xRight = 50;
+                    yRight = 50;
+                    break;
+                case 1:
+                    xLeft = 50;
+                    yLeft = 20;
+                    xRight = 20;
+                    yRight = 50;
+                    break;
+                case 2:
+                    xLeft = 50;
+                    yLeft = 50;
+                    xRight = 20;
+                    yRight = 20;
+                    break;
+                case 3:
+                    xLeft = 20;
+                    yLeft = 50;
+                    xRight = 50;
+                    yRight = 20;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
     }
 }

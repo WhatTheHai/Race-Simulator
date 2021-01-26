@@ -107,6 +107,7 @@ namespace ModelTest
             string expected = "a in de track test";
             Assert.AreEqual(expected, actualString);
         }
+        [Test]
         public void Add_SameParticipant_DifferentCars_BestParticipant_Track2()
         {
             var firstSpeed = new ParticipantSpeedPerTrack()
