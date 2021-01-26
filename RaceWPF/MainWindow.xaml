@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RaceWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid Background="#FF0A2B07">
-        <Image Margin="225,102,225,102"/>
+        Title="MainWindow" Height="720" Width="1280">
+    <Grid Background="DarkGreen">
+        <Image x:Name="TrackImg" Margin="0,0,0,0"/>
 
     </Grid>
 </Window>
