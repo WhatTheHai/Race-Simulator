@@ -12,8 +12,8 @@ namespace RaceWPF
         #region graphics
         private static readonly string _start = ".\\Assets\\Tracks\\StartGrid.png";
         private static readonly string _finish = ".\\Assets\\Tracks\\Finish.png";
-        private static readonly string _corner = ".\\Assets\\Tracks\\StartGrid.png";
-        private static readonly string _straight = ".\\Assets\\Tracks\\Finish.png";
+        private static readonly string _corner = ".\\Assets\\Tracks\\Corner.png";
+        private static readonly string _straight = ".\\Assets\\Tracks\\Straight.png";
         private static readonly string _blue = ".\\Assets\\Cars\\Cars\\Blue.png";
         private static readonly string _green = ".\\Assets\\Cars\\Cars\\Green.png";
         private static readonly string _grey = ".\\Assets\\Cars\\Cars\\Grey.png";
@@ -95,8 +95,8 @@ namespace RaceWPF
         {
 
             int currentX, currentY;
-            currentX = minX;
-            currentY = minY;
+            currentX = -minX;
+            currentY = -minY;
             int compass = 1;
             Graphics g = Graphics.FromImage(bitmap);
             foreach (Section section in track.Sections)
@@ -104,17 +104,125 @@ namespace RaceWPF
                 switch (section.SectionType)
                 {
                     case SectionTypes.StartGrid:
-                        g.DrawImage(ImageCache.GetImgBitmap(_start), new Point(currentX* trackSizePx, currentY*trackSizePx));
+                        Bitmap startGrid = new Bitmap(ImageCache.GetImgBitmap(_start));
+                        g.DrawImage(RotateAsset(startGrid, compass, "straight"), new Point(currentX* trackSizePx, currentY*trackSizePx));
                         break;
                     case SectionTypes.Finish:
+                        Bitmap finish = new Bitmap(ImageCache.GetImgBitmap(_finish));
+                        g.DrawImage(RotateAsset(finish, compass, "straight"), new Point(currentX * trackSizePx, currentY * trackSizePx));
+                        break;
+                    case SectionTypes.LeftCorner:
+                        Bitmap leftCorner = new Bitmap(ImageCache.GetImgBitmap(_corner));
+                        g.DrawImage(RotateAsset(leftCorner, compass, "leftCorner"), new Point(currentX * trackSizePx, currentY * trackSizePx));
+                        compass = (compass < 1) ? 3 : compass -= 1;
+                        break;
+                    case SectionTypes.RightCorner:
+                        Bitmap rightCorner = new Bitmap(ImageCache.GetImgBitmap(_corner));
+                        g.DrawImage(RotateAsset(rightCorner, compass, "rightCorner"), new Point(currentX * trackSizePx, currentY * trackSizePx));
+                        compass = (compass > 2) ? 0 : compass += 1;
+                        break;
+                    case SectionTypes.Straight:
+                        Bitmap straight = new Bitmap(ImageCache.GetImgBitmap(_straight));
+                        g.DrawImage(RotateAsset(straight, compass, "straight"), new Point(currentX * trackSizePx, currentY * trackSizePx));
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                switch (compass)
+                {
+                    case 0:
+                        currentY--;
+                        break;
+                    case 1:
+                        currentX++;
+                        break;
+                    case 2:
+                        currentY++;
+                        break;
+                    case 3:
+                        currentX--;
+                        break;
+                }
+            }
+
+            return bitmap;
+        }
+
+        public static Bitmap RotateAsset(Bitmap asset, int compass, string type)
+        {
+            switch (type)
+            {
+                case "straight":
+                    switch (compass)
+                    {
+                        case 0:
+                            asset.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                            return asset;
+                        case 1:
+                            return asset;
+                        case 2:
+                            asset.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                            return asset;
+                        case 3:
+                            asset.RotateFlip(RotateFlipType.Rotate180FlipNone);
+                            return asset;
+                    }
+                    break;
+                case "leftCorner":
+                    switch (compass)
+                    {
+                        case 0:
+                            asset.RotateFlip(RotateFlipType.Rotate180FlipNone);
+                            return asset;
+                        case 1:
+                            asset.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                            return asset;
+                        case 2:
+                            return asset;
+                        case 3:
+                            asset.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                            return asset;
+                    }
+                    break;
+                case "rightCorner":
+                    switch (compass)
+                    {
+                        case 0:
+                            asset.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                            return asset;
+                        case 1:
+                            asset.RotateFlip(RotateFlipType.Rotate180FlipNone);
+                            return asset;
+                        case 2:
+                            asset.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                            return asset;
+                        case 3:
+                            return asset;
+                    }
+                    break;
+            }
+
+            return asset;
+        }
+        public static Bitmap PutParticipants(Bitmap bitmap, Track track)
+        {
+
+            int currentX, currentY;
+            currentX = -minX;
+            currentY = -minY;
+            int compass = 1;
+            Graphics g = Graphics.FromImage(bitmap);
+            foreach (Section section in track.Sections)
+            {
+                switch (section.SectionType)
+                {
+                    case SectionTypes.StartGrid: case SectionTypes.Finish: case SectionTypes.Straight:
                         break;
                     case SectionTypes.LeftCorner:
                         compass = (compass < 1) ? 3 : compass -= 1;
                         break;
                     case SectionTypes.RightCorner:
                         compass = (compass > 2) ? 0 : compass += 1;
-                        break;
-                    case SectionTypes.Straight:
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

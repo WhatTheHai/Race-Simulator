@@ -90,7 +90,6 @@
     <Content Include="Assets\Cars\Broken\Red.png" />
     <Content Include="Assets\Cars\Broken\Yellow.png" />
     <Content Include="Assets\Cars\Cars\Blue.png" />
-    <Content Include="Assets\Cars\Cars\broken.png" />
     <Content Include="Assets\Cars\Cars\Green.png" />
     <Content Include="Assets\Cars\Cars\Grey.png" />
     <Content Include="Assets\Cars\Cars\Purple.png" />
@@ -120,10 +119,18 @@
     <Content Include="Assets\Cars\Turned\West\Purple.png" />
     <Content Include="Assets\Cars\Turned\West\Red.png" />
     <Content Include="Assets\Cars\Turned\West\Yellow.png" />
-    <Content Include="Assets\Tracks\Corner.png" />
-    <Content Include="Assets\Tracks\Finish.png" />
-    <Content Include="Assets\Tracks\StartGrid.png" />
-    <Content Include="Assets\Tracks\Straight.png" />
+    <Content Include="Assets\Tracks\Corner.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Tracks\Finish.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Tracks\StartGrid.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Tracks\Straight.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Tracks\Turned\CornerNE.png" />
     <Content Include="Assets\Tracks\Turned\CornerNW.png" />
     <Content Include="Assets\Tracks\Turned\CornerSE.png" />
