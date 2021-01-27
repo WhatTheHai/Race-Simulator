@@ -310,7 +310,7 @@ namespace Controller
                 RepairOrBreakEquipment();
                 StartTime = DateTime.Now;
                 DriversChanged?.Invoke(this, new DriversChangedEventArgs() { Track = this.Track });
-                CheckRaceFinished();
+                CheckRaceFinished(this.Track);
                 _isMoving = false;
             }
         }
@@ -402,9 +402,9 @@ namespace Controller
             TimeSpan timeTaken = timePast.Subtract(StartTime);
             Data.Competition.AddSectionTimesToParticipants(name, section, timeTaken);
         }
-        public void CheckRaceFinished()
+        public void CheckRaceFinished(Track track)
         {
-            if (_participantsCounter == 0)
+            if (_participantsCounter == 0 && track != null)
             {
                 NextRace?.Invoke(this, new EventArgs());
             }

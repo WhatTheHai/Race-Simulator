@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,8 @@ namespace RaceWPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        private CompetitionPartStats _competitionPartStats;
+        private CurrentRaceStats _currentRaceStats;
         public MainWindow()
         {
             Data.Initialize();
@@ -58,8 +61,25 @@ namespace RaceWPF
             }
             else
             {
-                ImageCache.ClearCache();
+                Visualization.DrawTrack(null);
             }
+        }
+
+        private void MenuItem_Exit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void MenuItem_ShowCurrentRaceStats_Click(object sender, RoutedEventArgs e)
+        {
+            _currentRaceStats = new CurrentRaceStats();
+            _currentRaceStats.Show();
+        }
+
+        private void MenuItem_ShowCompPartStats_Click(object sender, RoutedEventArgs e)
+        {
+            _competitionPartStats = new CompetitionPartStats();
+            _competitionPartStats.Show();
         }
     }
 }

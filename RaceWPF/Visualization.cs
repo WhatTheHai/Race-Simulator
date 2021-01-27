@@ -34,11 +34,18 @@ namespace RaceWPF
         private static int _globalX, _globalY, minX, minY;
         public static BitmapSource DrawTrack(Track track)
         {
-            CalculateWidthAndHeight(track);
-            Bitmap noTrack = ImageCache.CreateEmptyBitmap(_globalX* trackSizePx, _globalY* trackSizePx);
-            Bitmap emptyTrack = PutTrack(noTrack, track);
-            Bitmap filledTrack = PutParticipants(emptyTrack, track);
-            return ImageCache.CreateBitmapSourceFromGdiBitmap(filledTrack);
+            if (track != null)
+            {
+
+                CalculateWidthAndHeight(track);
+                Bitmap noTrack = ImageCache.CreateEmptyBitmap(_globalX * trackSizePx, _globalY * trackSizePx);
+                Bitmap emptyTrack = PutTrack(noTrack, track);
+                Bitmap filledTrack = PutParticipants(emptyTrack, track);
+                return ImageCache.CreateBitmapSourceFromGdiBitmap(filledTrack);
+            }
+
+            Bitmap finished = ImageCache.CreateEmptyBitmap(512, 512);
+            return ImageCache.CreateBitmapSourceFromGdiBitmap(finished);
         }
 
         public static void CalculateWidthAndHeight(Track track)
@@ -255,25 +262,32 @@ namespace RaceWPF
 
         public static Bitmap PrintCar(Bitmap bitmap, Section section, int x, int y, int compass)
         {
-            Graphics g = Graphics.FromImage(bitmap);
-            SectionData sd = Data.CurrentRace.GetSectionData(section);
-            int xLeft, yLeft, xRight, yRight;
-            xLeft = yLeft = xRight = yRight = 0;
-            DeterminePos(ref xLeft,ref yLeft,ref xRight,ref yRight, compass);
-            if (sd.Left != null)
+            if (Data.CurrentRace != null)
             {
-                string leftColour = GetTeamColour(sd.Left.TeamColor, sd.Left.Equipment.IsBroken);
-                Bitmap leftCar = new Bitmap(ImageCache.GetImgBitmap(leftColour));
-                g.DrawImage(RotateAsset(leftCar, compass, "straight"), new Point(x * trackSizePx+xLeft, y * trackSizePx+yLeft));
-            }
-            if (sd.Right != null)
-            {
-                string rightColour = GetTeamColour(sd.Right.TeamColor, sd.Right.Equipment.IsBroken);
-                Bitmap rightCar = new Bitmap(ImageCache.GetImgBitmap(rightColour));
-                g.DrawImage(RotateAsset(rightCar, compass, "straight"), new Point(x * trackSizePx+xRight, y * trackSizePx+yRight));
-            }
+                Graphics g = Graphics.FromImage(bitmap);
+                SectionData sd = Data.CurrentRace.GetSectionData(section);
+                int xLeft, yLeft, xRight, yRight;
+                xLeft = yLeft = xRight = yRight = 0;
+                DeterminePos(ref xLeft, ref yLeft, ref xRight, ref yRight, compass);
+                if (sd.Left != null)
+                {
+                    string leftColour = GetTeamColour(sd.Left.TeamColor, sd.Left.Equipment.IsBroken);
+                    Bitmap leftCar = new Bitmap(ImageCache.GetImgBitmap(leftColour));
+                    g.DrawImage(RotateAsset(leftCar, compass, "straight"), new Point(x * trackSizePx + xLeft, y * trackSizePx + yLeft));
+                }
+                if (sd.Right != null)
+                {
+                    string rightColour = GetTeamColour(sd.Right.TeamColor, sd.Right.Equipment.IsBroken);
+                    Bitmap rightCar = new Bitmap(ImageCache.GetImgBitmap(rightColour));
+                    g.DrawImage(RotateAsset(rightCar, compass, "straight"), new Point(x * trackSizePx + xRight, y * trackSizePx + yRight));
+                }
 
-            return bitmap;
+                return bitmap;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public static string GetTeamColour(TeamColors teamColor, bool brokenStatus)

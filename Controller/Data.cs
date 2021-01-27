@@ -66,8 +66,8 @@ namespace Controller
                 SectionTypes.RightCorner,
                 SectionTypes.RightCorner
             };
-            /*Track babyPark = new Track("BabyPark", sections1);
-            Competition.Tracks.Enqueue(babyPark);*/
+            Track babyPark = new Track("BabyPark", sections1);
+            Competition.Tracks.Enqueue(babyPark);
 
             SectionTypes[] sections2 =
 {
@@ -90,8 +90,8 @@ namespace Controller
                 SectionTypes.LeftCorner,
                 SectionTypes.LeftCorner
             };
-            /*Track youSpinMeRound = new Track("YouSpinMeRound", sections2);
-            Competition.Tracks.Enqueue(youSpinMeRound);*/
+            Track youSpinMeRound = new Track("YouSpinMeRound", sections2);
+            Competition.Tracks.Enqueue(youSpinMeRound);
 
             SectionTypes[] sections3 =
             {

@@ -6,8 +6,21 @@
         xmlns:local="clr-namespace:RaceWPF"
         mc:Ignorable="d"
         Title="MainWindow" Height="720" Width="1280">
+    <Window.DataContext>
+        <local:DataContextMainWindow/>
+    </Window.DataContext>
     <Grid Background="DarkGreen">
-        <Image x:Name="TrackImg" Margin="0,0,0,0"/>
-
+        <DockPanel>
+            <Menu DockPanel.Dock="Top" Height="20" VerticalAlignment="Top">
+                <MenuItem Header="Menu">
+                    <MenuItem Header="MenuItemCurrentRaceStats" Click="MenuItem_ShowCurrentRaceStats_Click"/>
+                    <MenuItem Header="MenuItemCompPartStats" Click="MenuItem_ShowCompPartStats_Click"/>
+                    <MenuItem Header="MenuItemExit" Click="MenuItem_Exit_Click"/>
+                </MenuItem>
+            </Menu>
+            <Label Content="{Binding CurrentTrackName, Mode=OneWay}" Width="150"/>
+            <Image x:Name="TrackImg" Margin="0,0,0,0"/>
+           
+        </DockPanel>
     </Grid>
 </Window>
