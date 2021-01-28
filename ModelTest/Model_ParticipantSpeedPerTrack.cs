@@ -104,7 +104,7 @@ namespace ModelTest
 
             string actualString = firstSpeed.BestParticipant(_list);
 
-            string expected = "a in de track test";
+            string expected = "a in the track test";
             Assert.AreEqual(expected, actualString);
         }
         [Test]
@@ -138,7 +138,7 @@ namespace ModelTest
 
             string actualString = firstSpeed.BestParticipant(_list);
 
-            string expected = "c in de track test2";
+            string expected = "c in the track test2";
             Assert.AreEqual(expected, actualString);
         }
     }

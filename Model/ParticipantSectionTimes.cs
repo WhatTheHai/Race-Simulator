@@ -13,11 +13,10 @@ namespace Model
         public void Add(List<IDataConstraints> list)
         {
             foreach (var pst in list.Cast<ParticipantSectionTimes>()
-                .Where(pst => pst.Section == Section)
                 .Where(pst => pst.Name == Name))
             {
                 // overschrijven ?
-                pst.Time = Time;
+                pst.Time += Time;
                 return;
             }
             list.Add(this);

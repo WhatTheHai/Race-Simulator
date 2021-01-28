@@ -1,28 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 using Controller;
+using Model;
 
 namespace RaceWPF
 {
-    public class DataContextMainWindow: INotifyPropertyChanged
+    public class DataContextCompetition : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public DataContextMainWindow()
+        public IEnumerable<string> AllPoints
+        {
+            get => Data.Competition.ParticipantPoints.GetList()
+                .Select(i => $"{i.Name} - {((ParticipantPoints)i).Points}");
+        }
+
+        public string BestParticipant
+        {
+            get => Data.Competition.ParticipantSpeedPerTrack.bestParticipant();
+        }
+
+        public DataContextCompetition()
         {
             if (Data.CurrentRace != null)
             {
                 Data.CurrentRace.DriversChanged += OnDriversChanged;
             }
-        }
-
-        public string CurrentTrackName
-        {
-            get => Data.CurrentRace != null
-                ? $"Current track:\n{Data.CurrentRace.Track.Name}"
-                : "All races\nhave finished!";
         }
 
         public void OnDriversChanged(Object sender, EventArgs e)

@@ -52,16 +52,19 @@ namespace RaceWPF
         {
             ImageCache.ClearCache();
             Data.CurrentRace.CleanupEvents();
+            Data.Competition.ParticipantTimesBroken.Reset();
+            Data.Competition.ParticipantsTimes.Reset();
             Data.NextRace();
             if (Data.CurrentRace != null)
             {
+                Data.CurrentRace.DriversChanged += DataContextMainWindow.OnDriversChanged;
+                if(_currentRaceStats != null)
+                    Data.CurrentRace.DriversChanged += _currentRaceStats.DataContextCurrentRace.OnDriversChanged;
+                if (_competitionPartStats != null)
+                    Data.CurrentRace.DriversChanged += _competitionPartStats.DataContextCompetition.OnDriversChanged;
                 Data.CurrentRace.DriversChanged += OnDriversChanged;
                 Data.CurrentRace.NextRace += OnNextRace;
                 Data.CurrentRace.Start();
-            }
-            else
-            {
-                Visualization.DrawTrack(null);
             }
         }
 

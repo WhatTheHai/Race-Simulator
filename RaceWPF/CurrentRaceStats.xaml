@@ -6,7 +6,26 @@
         xmlns:local="clr-namespace:RaceWPF"
         mc:Ignorable="d"
         Title="CurrentRaceStats" Height="450" Width="800">
+    <Window.DataContext>
+        <local:DataContextCurrentRace x:Name="DataContextCurrentRace"/>
+    </Window.DataContext>
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <DockPanel Grid.Column="0">
+            <Label DockPanel.Dock="Top" Content="Total time spent on the track"/>
+            <ListView Margin="10" ItemsSource="{Binding SectionTimes}"/>
+        </DockPanel>
+        <DockPanel Grid.Column="1">
+            <Label DockPanel.Dock="Top" Content="Total time spent broken"/>
+            <ListView Margin="10" ItemsSource="{Binding TimesBroken}"/>
+        </DockPanel>
+        <DockPanel Grid.Column="2">
+            <Label DockPanel.Dock="Top" Content="Speed per track"/>
+            <ListView Margin="10" ItemsSource="{Binding ComponentStats}"/>
+        </DockPanel>
     </Grid>
 </Window>

@@ -6,7 +6,21 @@
         xmlns:local="clr-namespace:RaceWPF"
         mc:Ignorable="d"
         Title="CompetitionPartStats" Height="450" Width="800">
+    <Window.DataContext>
+        <local:DataContextCompetition x:Name="DataContextCompetition"/>
+    </Window.DataContext>
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <DockPanel Grid.Column="0">
+            <Label DockPanel.Dock="Top" Content="Points distribution"/>
+            <ListView Margin="10" ItemsSource="{Binding AllPoints}"/>
+        </DockPanel>
+        <DockPanel Grid.Column="1">
+            <Label DockPanel.Dock="Top" Content="The participant with the best car at the end of a track is"/>
+            <Label DockPanel.Dock="Top" Content="{Binding BestParticipant}"/>
+        </DockPanel>
     </Grid>
 </Window>

@@ -13,7 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControllerTest", "Controlle
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelTest", "ModelTest\ModelTest.csproj", "{F747976C-F8F1-41D1-896F-CEB6D070D14D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaceWPF", "RaceWPF\RaceWPF.csproj", "{0CA4C4D5-B320-4399-8C3D-DD74979AFC0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RaceWPF", "RaceWPF\RaceWPF.csproj", "{0CA4C4D5-B320-4399-8C3D-DD74979AFC0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaceWPFTest", "RaceWPFTest\RaceWPFTest.csproj", "{65F86CA0-23EF-4EA6-A7A5-9ED2CE01D6F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Race SimulatorTest", "Race SimulatorTest\Race SimulatorTest.csproj", "{F8172A6E-62F4-4F4E-A582-0FA9CBFEAA4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,14 @@ Global
 		{0CA4C4D5-B320-4399-8C3D-DD74979AFC0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CA4C4D5-B320-4399-8C3D-DD74979AFC0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CA4C4D5-B320-4399-8C3D-DD74979AFC0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65F86CA0-23EF-4EA6-A7A5-9ED2CE01D6F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65F86CA0-23EF-4EA6-A7A5-9ED2CE01D6F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65F86CA0-23EF-4EA6-A7A5-9ED2CE01D6F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65F86CA0-23EF-4EA6-A7A5-9ED2CE01D6F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8172A6E-62F4-4F4E-A582-0FA9CBFEAA4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8172A6E-62F4-4F4E-A582-0FA9CBFEAA4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8172A6E-62F4-4F4E-A582-0FA9CBFEAA4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8172A6E-62F4-4F4E-A582-0FA9CBFEAA4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

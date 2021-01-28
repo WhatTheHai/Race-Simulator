@@ -18,5 +18,15 @@ namespace Model
         {
             return _list.Any() ? _list[0].BestParticipant(_list) : "To be determined";
         }
+
+        public List<IDataConstraints> GetList()
+        {
+            return _list;
+        }
+
+        public void Reset()
+        {
+            _list = new List<IDataConstraints>();
+        }
     }
 }
