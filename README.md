@@ -1,5 +1,5 @@
-# Race-Simulator
-C# individuele project voor Windesheim
+# Race-Simulator aka Race-Sim, Racesim and Racesimulator
+C# individual project voor Windesheim
 
 Console-App works relatively fine, WPF application still needs to be fixed.
 
